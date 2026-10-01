@@ -15,9 +15,16 @@ public class Main {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
+        // =========================================
         // Zohaib - GUI + Owner Section
+        // =========================================
+
         JLabel title = new JLabel("Vehicular Cloud Real Time System");
+        title.setFont(new Font("Arial", Font.BOLD, 20));
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(title);
+
+        panel.add(Box.createVerticalStrut(10));
 
         JLabel userTypeLabel = new JLabel("Select User Type:");
         panel.add(userTypeLabel);
@@ -26,22 +33,36 @@ public class Main {
         JComboBox<String> userType = new JComboBox<>(options);
         panel.add(userType);
 
-        // Zohaib - Owner fields
+        panel.add(Box.createVerticalStrut(10));
+
+        JPanel ownerPanel = new JPanel();
+        ownerPanel.setLayout(new GridLayout(3, 2, 5, 5));
+        ownerPanel.setBorder(
+                BorderFactory.createTitledBorder("Owner Information")
+        );
+
         JTextField ownerID = new JTextField();
         JTextField vehicleInfo = new JTextField();
         JTextField residencyTime = new JTextField();
 
-        panel.add(new JLabel("Owner ID:"));
-        panel.add(ownerID);
+        ownerPanel.add(new JLabel("Owner ID:"));
+        ownerPanel.add(ownerID);
 
-        panel.add(new JLabel("Vehicle Information:"));
-        panel.add(vehicleInfo);
+        ownerPanel.add(new JLabel("Vehicle Information:"));
+        ownerPanel.add(vehicleInfo);
 
-        panel.add(new JLabel("Residency Time:"));
-        panel.add(residencyTime);
+        ownerPanel.add(new JLabel("Residency Time:"));
+        ownerPanel.add(residencyTime);
+
+        panel.add(ownerPanel);
+
+        panel.add(Box.createVerticalStrut(10));
 
 
+        // =========================================
         // Felix - Client Section
+        // =========================================
+
         JTextField clientID = new JTextField();
         JTextField jobDuration = new JTextField();
         JTextField jobDeadline = new JTextField();
@@ -56,16 +77,27 @@ public class Main {
         panel.add(jobDeadline);
 
 
+        // =========================================
         // Joana - File Saving + Timestamp
+        // =========================================
+
         JButton saveButton = new JButton("Save");
 
         saveButton.addActionListener(e -> {
 
             try {
-                FileWriter writer = new FileWriter("transactions.txt", true);
+                FileWriter writer =
+                        new FileWriter("transactions.txt", true);
 
-                writer.write("Time: " + LocalDateTime.now() + "\n");
-                writer.write("User Type: " + userType.getSelectedItem() + "\n");
+                writer.write(
+                        "Time: " + LocalDateTime.now() + "\n"
+                );
+
+                writer.write(
+                        "User Type: "
+                        + userType.getSelectedItem()
+                        + "\n"
+                );
 
                 writer.write("----------------------\n");
 
@@ -77,17 +109,25 @@ public class Main {
                 );
 
             } catch (IOException ex) {
-                System.out.println("Error saving file");
+
+                System.out.println(
+                        "Error saving file"
+                );
             }
         });
 
         panel.add(saveButton);
 
 
+        // =========================================
         // Ben - Testing / Errors / GitHub
-        JButton testButton = new JButton("Test Program");
+        // =========================================
+
+        JButton testButton =
+                new JButton("Test Program");
 
         testButton.addActionListener(e -> {
+
             JOptionPane.showMessageDialog(
                     frame,
                     "Testing still in progress"
