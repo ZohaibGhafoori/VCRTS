@@ -1,0 +1,8 @@
+----------------------------------------
+Timestamp: 2026-10-01 12:26:02
+User Type: Owner
+Owner ID: Zohaib
+Vehicle Make: BMW
+Vehicle Model: M3
+Vehicle Year: 2026
+Approx. Residency Time: 1 hours
