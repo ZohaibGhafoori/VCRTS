@@ -15,16 +15,11 @@ public class Main {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        // =========================================
+
         // Zohaib - GUI + Owner Section
-        // =========================================
 
         JLabel title = new JLabel("Vehicular Cloud Real Time System");
-        title.setFont(new Font("Arial", Font.BOLD, 20));
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(title);
-
-        panel.add(Box.createVerticalStrut(10));
 
         JLabel userTypeLabel = new JLabel("Select User Type:");
         panel.add(userTypeLabel);
@@ -33,35 +28,34 @@ public class Main {
         JComboBox<String> userType = new JComboBox<>(options);
         panel.add(userType);
 
-        panel.add(Box.createVerticalStrut(10));
-
-        JPanel ownerPanel = new JPanel();
-        ownerPanel.setLayout(new GridLayout(3, 2, 5, 5));
-        ownerPanel.setBorder(
-                BorderFactory.createTitledBorder("Owner Information")
-        );
+        JLabel ownerLabel = new JLabel("Owner Information");
+        panel.add(ownerLabel);
 
         JTextField ownerID = new JTextField();
         JTextField vehicleInfo = new JTextField();
         JTextField residencyTime = new JTextField();
 
-        ownerPanel.add(new JLabel("Owner ID:"));
-        ownerPanel.add(ownerID);
+        panel.add(new JLabel("Owner ID:"));
+        panel.add(ownerID);
 
-        ownerPanel.add(new JLabel("Vehicle Information:"));
-        ownerPanel.add(vehicleInfo);
+        panel.add(new JLabel("Vehicle Information:"));
+        panel.add(vehicleInfo);
 
-        ownerPanel.add(new JLabel("Residency Time:"));
-        ownerPanel.add(residencyTime);
+        panel.add(new JLabel("Residency Time:"));
+        panel.add(residencyTime);
 
-        panel.add(ownerPanel);
+        JButton clearOwnerButton = new JButton("Clear Owner Fields");
 
-        panel.add(Box.createVerticalStrut(10));
+        clearOwnerButton.addActionListener(e -> {
+            ownerID.setText("");
+            vehicleInfo.setText("");
+            residencyTime.setText("");
+        });
+
+        panel.add(clearOwnerButton);
 
 
-        // =========================================
         // Felix - Client Section
-        // =========================================
 
         JTextField clientID = new JTextField();
         JTextField jobDuration = new JTextField();
@@ -77,15 +71,14 @@ public class Main {
         panel.add(jobDeadline);
 
 
-        // =========================================
         // Joana - File Saving + Timestamp
-        // =========================================
 
         JButton saveButton = new JButton("Save");
 
         saveButton.addActionListener(e -> {
 
             try {
+
                 FileWriter writer =
                         new FileWriter("transactions.txt", true);
 
@@ -119,9 +112,7 @@ public class Main {
         panel.add(saveButton);
 
 
-        // =========================================
         // Ben - Testing / Errors / GitHub
-        // =========================================
 
         JButton testButton =
                 new JButton("Test Program");
@@ -135,6 +126,7 @@ public class Main {
         });
 
         panel.add(testButton);
+
 
         frame.add(panel);
         frame.setVisible(true);
