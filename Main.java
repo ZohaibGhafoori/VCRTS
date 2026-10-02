@@ -55,7 +55,7 @@ public class Main {
         panel.add(clearOwnerButton);
 
 
-        // Felix - Client Section
+       // Felix - Client Section
 
         JTextField clientID = new JTextField();
         JTextField jobDuration = new JTextField();
@@ -70,6 +70,16 @@ public class Main {
         panel.add(new JLabel("Job Deadline:"));
         panel.add(jobDeadline);
 
+        // Clear button for Client fields
+        JButton clearClientButton = new JButton("Clear Client Fields");
+
+        clearClientButton.addActionListener(e -> {
+            clientID.setText("");
+            jobDuration.setText("");
+            jobDeadline.setText("");
+        });
+
+        panel.add(clearClientButton);
 
         // Joana - File Saving + Timestamp
 
