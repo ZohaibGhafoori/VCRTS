@@ -1,9 +1,8 @@
-import javax.swing.*;
-import java.awt.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
-
+import java.time.format.DateTimeFormatter;
+import javax.swing.*;
 public class Main {
 
     public static void main(String[] args) {
@@ -81,41 +80,38 @@ public class Main {
 
         panel.add(clearClientButton);
 
-        // Joana - File Saving + Timestamp
-
+    // Joanna - File Saving + Timestamp
+           
         JButton saveButton = new JButton("Save");
 
         saveButton.addActionListener(e -> {
 
             try {
+                FileWriter writer = new FileWriter("transactions.txt", true);
 
-                FileWriter writer =
-                        new FileWriter("transactions.txt", true);
+                writer.write("Time: " + LocalDateTime.now().format(
+                        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "\n");
+                writer.write("User Type: " + userType.getSelectedItem() + "\n");
 
-                writer.write(
-                        "Time: " + LocalDateTime.now() + "\n"
-                );
+                // Owner info
+                writer.write("Owner ID: " + ownerID.getText() + "\n");
+                writer.write("Vehicle Information: " + vehicleInfo.getText() + "\n");
+                writer.write("Residency Time: " + residencyTime.getText() + "\n");
 
-                writer.write(
-                        "User Type: "
-                        + userType.getSelectedItem()
-                        + "\n"
-                );
+                // Client info
+                writer.write("Client ID: " + clientID.getText() + "\n");
+                writer.write("Job Duration: " + jobDuration.getText() + "\n");
+                writer.write("Job Deadline: " + jobDeadline.getText() + "\n");
 
                 writer.write("----------------------\n");
 
                 writer.close();
 
-                JOptionPane.showMessageDialog(
-                        frame,
-                        "Information saved"
-                );
+                JOptionPane.showMessageDialog(frame,
+                        "Information saved");
 
             } catch (IOException ex) {
-
-                System.out.println(
-                        "Error saving file"
-                );
+                System.out.println("Error saving file");
             }
         });
 
@@ -134,7 +130,6 @@ public class Main {
                     "Testing still in progress"
             );
         });
-
         panel.add(testButton);
 
 
