@@ -10,7 +10,7 @@ public class Main {
     public static void main(String[] args) {
 
         JFrame frame = new JFrame("VCRTS");
-        frame.setSize(500, 500);
+        frame.setSize(350, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel panel = new JPanel();
@@ -29,9 +29,6 @@ public class Main {
         String[] options = {"Owner", "Client"};
         JComboBox<String> userType = new JComboBox<>(options);
         panel.add(userType);
-
-        JLabel ownerLabel = new JLabel("Owner Information");
-        panel.add(ownerLabel);
 
         JTextField ownerID = new JTextField();
         JTextField vehicleInfo = new JTextField();
@@ -56,6 +53,7 @@ public class Main {
         });
 
         panel.add(clearOwnerButton);
+
 
 
        // Felix - Client Section
@@ -84,6 +82,30 @@ public class Main {
         });
 
         panel.add(clearClientButton);
+
+       // Ben - Disable GUI elements depending on user type
+
+     userType.addActionListener(s -> {
+
+        if (userType.getSelectedItem().equals("Owner")) {
+            for (JTextField field : ownerFields) {
+                field.setEnabled(true);
+            }
+            for (JTextField field : clientFields) {
+                field.setEnabled(false);
+            }
+        }
+        else if(userType.getSelectedItem().equals("Client")) {
+            for (JTextField field : clientFields) {
+                field.setEnabled(true);
+            }
+            for (JTextField field : ownerFields) {
+                field.setEnabled(false);
+            }
+        }
+       });
+
+        userType.setSelectedItem("Owner");
 
     // Joanna - File Saving + Timestamp
            
