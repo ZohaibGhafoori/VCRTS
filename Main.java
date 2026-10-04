@@ -86,8 +86,7 @@ public class Main {
 
         saveButton.addActionListener(e -> {
 
-            try {
-                FileWriter writer = new FileWriter("transactions.txt", true);
+            try (FileWriter writer = new FileWriter("transactions.txt", true)) {
 
                 writer.write("Time: " + LocalDateTime.now().format(
                         DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "\n");
@@ -105,13 +104,14 @@ public class Main {
 
                 writer.write("----------------------\n");
 
-                writer.close();
-
                 JOptionPane.showMessageDialog(frame,
                         "Information saved");
 
             } catch (IOException ex) {
-                System.out.println("Error saving file");
+                JOptionPane.showMessageDialog(frame,
+                        "Could not save to file: " + ex.getMessage(),
+                        "Save Error",
+                        JOptionPane.ERROR_MESSAGE);
             }
         });
 
