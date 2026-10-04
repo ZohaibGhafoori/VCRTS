@@ -11,6 +11,7 @@ public class Main {
 
         JFrame frame = new JFrame("VCRTS");
         frame.setSize(350, 500);
+        frame.setMinimumSize(frame.getSize());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel panel = new JPanel();
@@ -177,12 +178,18 @@ public class Main {
                     writer.write("Owner ID: " + ownerID.getText() + "\n");
                     writer.write("Vehicle Information: " + vehicleInfo.getText() + "\n");
                     writer.write("Residency Time: " + residencyTime.getText() + "\n");
+                    for (JTextField field : ownerFields) {
+                        field.setText("");
+                    }
                 }
                 if (userType.getSelectedItem().equals("Client")) {
                     // Client info
                     writer.write("Client ID: " + clientID.getText() + "\n");
                     writer.write("Job Duration: " + jobDuration.getText() + "\n");
                     writer.write("Job Deadline: " + jobDeadline.getText() + "\n");
+                    for (JTextField field : clientFields) {
+                        field.setText("");
+                    }
                 }
 
                 writer.write("----------------------\n");
