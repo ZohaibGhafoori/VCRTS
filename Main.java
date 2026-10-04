@@ -84,6 +84,18 @@ public class Main {
 
         panel.add(clearClientButton);
 
+        // Ben - Align elemts to the left
+        for (java.awt.Component c : panel.getComponents()) {
+            JComponent comp = (JComponent) c;
+            comp.setAlignmentX(JComponent.LEFT_ALIGNMENT);
+            if (comp instanceof JTextField || comp instanceof JComboBox) {
+                comp.setMaximumSize(new java.awt.Dimension(Integer.MAX_VALUE, comp.getPreferredSize().height));
+            }
+            if (comp instanceof JLabel) {
+                comp.setBorder(BorderFactory.createEmptyBorder(5, 0, 1, 0));
+            }
+        }
+
        // Ben - Disable GUI elements depending on user type
 
      userType.addActionListener(s -> {
