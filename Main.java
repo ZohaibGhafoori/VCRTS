@@ -92,15 +92,17 @@ public class Main {
                         DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "\n");
                 writer.write("User Type: " + userType.getSelectedItem() + "\n");
 
-                // Owner info
-                writer.write("Owner ID: " + ownerID.getText() + "\n");
-                writer.write("Vehicle Information: " + vehicleInfo.getText() + "\n");
-                writer.write("Residency Time: " + residencyTime.getText() + "\n");
-
-                // Client info
-                writer.write("Client ID: " + clientID.getText() + "\n");
-                writer.write("Job Duration: " + jobDuration.getText() + "\n");
-                writer.write("Job Deadline: " + jobDeadline.getText() + "\n");
+                if (userType.getSelectedItem().equals("Owner")) {
+                    // Owner info
+                    writer.write("Owner ID: " + ownerID.getText() + "\n");
+                    writer.write("Vehicle Information: " + vehicleInfo.getText() + "\n");
+                    writer.write("Residency Time: " + residencyTime.getText() + "\n");
+                } else {
+                    // Client info
+                    writer.write("Client ID: " + clientID.getText() + "\n");
+                    writer.write("Job Duration: " + jobDuration.getText() + "\n");
+                    writer.write("Job Deadline: " + jobDeadline.getText() + "\n");
+                }
 
                 writer.write("----------------------\n");
 
