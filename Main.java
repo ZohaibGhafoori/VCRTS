@@ -13,6 +13,7 @@ public class Main {
 
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
 
         // Zohaib - GUI + Owner Section
@@ -33,6 +34,7 @@ public class Main {
         JTextField ownerID = new JTextField();
         JTextField vehicleInfo = new JTextField();
         JTextField residencyTime = new JTextField();
+        JTextField[] ownerFields = {ownerID, vehicleInfo, residencyTime};
 
         panel.add(new JLabel("Owner ID:"));
         panel.add(ownerID);
@@ -40,7 +42,7 @@ public class Main {
         panel.add(new JLabel("Vehicle Information:"));
         panel.add(vehicleInfo);
 
-        panel.add(new JLabel("Residency Time:"));
+        panel.add(new JLabel("Residency Time (yyyy-MM-dd):"));
         panel.add(residencyTime);
 
         JButton clearOwnerButton = new JButton("Clear Owner Fields");
@@ -59,6 +61,7 @@ public class Main {
         JTextField clientID = new JTextField();
         JTextField jobDuration = new JTextField();
         JTextField jobDeadline = new JTextField();
+        JTextField[] clientFields = {clientID, jobDuration, jobDeadline};
 
         panel.add(new JLabel("Client ID:"));
         panel.add(clientID);
@@ -93,21 +96,44 @@ public class Main {
                 writer.write("User Type: " + userType.getSelectedItem() + "\n");
 
                 if (userType.getSelectedItem().equals("Owner")) {
-                    // Owner info
-                    writer.write("Owner ID: " + ownerID.getText() + "\n");
-                    writer.write("Vehicle Information: " + vehicleInfo.getText() + "\n");
-                    writer.write("Residency Time: " + residencyTime.getText() + "\n");
-                } else {
+                    // Ben - Testing for empty fields
+                    for (JTextField field : ownerFields) {
+                        if (field.getText().isEmpty()){
+                            JOptionPane.showMessageDialog(frame, "All fields must be filled before saving","Save Error", JOptionPane.ERROR_MESSAGE);
+                            break;
+                        }
+                        else{
+                            writer.write("Owner ID: " + ownerID.getText() + "\n");
+                            writer.write("Vehicle Information: " + vehicleInfo.getText() + "\n");
+                            writer.write("Residency Time: " + residencyTime.getText() + "\n");
+
+                            JOptionPane.showMessageDialog(frame,"Information saved");
+                        }
+                    }
+                } 
+                if (userType.getSelectedItem().equals("Client")) {
                     // Client info
-                    writer.write("Client ID: " + clientID.getText() + "\n");
-                    writer.write("Job Duration: " + jobDuration.getText() + "\n");
-                    writer.write("Job Deadline: " + jobDeadline.getText() + "\n");
-                }
+                    for (JTextField field : clientFields) {
+                        if (field.getText().isEmpty()){
+                            JOptionPane.showMessageDialog(frame, "All fields must filled before saving","Save Error", JOptionPane.ERROR_MESSAGE);
+                            break;
+                        }
+                        else {
+                            writer.write("Client ID: " + clientID.getText() + "\n");
+                            writer.write("Job Duration: " + jobDuration.getText() + "\n");
+                            writer.write("Job Deadline: " + jobDeadline.getText() + "\n");
+
+                            JOptionPane.showMessageDialog(frame,"Information saved");
+                        }
+                    }
+                }   
+
+
+
 
                 writer.write("----------------------\n");
 
-                JOptionPane.showMessageDialog(frame,
-                        "Information saved");
+
 
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(frame,
@@ -118,22 +144,6 @@ public class Main {
         });
 
         panel.add(saveButton);
-
-
-        // Ben - Testing / Errors / GitHub
-
-        JButton testButton =
-                new JButton("Test Program");
-
-        testButton.addActionListener(e -> {
-
-            JOptionPane.showMessageDialog(
-                    frame,
-                    "Testing still in progress"
-            );
-        });
-        panel.add(testButton);
-
 
         frame.add(panel);
         frame.setVisible(true);
