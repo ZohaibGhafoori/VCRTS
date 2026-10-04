@@ -1,7 +1,9 @@
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import javax.swing.*;
 public class Main {
 
@@ -42,7 +44,7 @@ public class Main {
         panel.add(new JLabel("Vehicle Information:"));
         panel.add(vehicleInfo);
 
-        panel.add(new JLabel("Residency Time (yyyy-MM-dd):"));
+        panel.add(new JLabel("Residency Time (hours):"));
         panel.add(residencyTime);
 
         JButton clearOwnerButton = new JButton("Clear Owner Fields");
@@ -69,7 +71,7 @@ public class Main {
         panel.add(new JLabel("Job Duration:"));
         panel.add(jobDuration);
 
-        panel.add(new JLabel("Job Deadline:"));
+        panel.add(new JLabel("Job Deadline (yyyy-MM-dd):"));
         panel.add(jobDeadline);
 
         // Clear button for Client fields
@@ -89,6 +91,59 @@ public class Main {
 
         saveButton.addActionListener(e -> {
 
+            // Ben - Field entry checks 
+            if (userType.getSelectedItem().equals("Owner")) {
+                // Empty fields
+                for (JTextField field : ownerFields) {
+                    if (field.getText().trim().isEmpty()){
+                        JOptionPane.showMessageDialog(frame, "All fields must be filled before saving","Save Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
+
+                // Residency time must be a positive number
+                try {
+                    if (Double.parseDouble(residencyTime.getText().trim()) <= 0) {
+                        JOptionPane.showMessageDialog(frame, "Residency Time must be greater than 0","Save Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(frame, "Residency Time must be a number","Save Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
+            if (userType.getSelectedItem().equals("Client")) {
+                // Empty fields
+                for (JTextField field : clientFields) {
+                    if (field.getText().trim().isEmpty()){
+                        JOptionPane.showMessageDialog(frame, "All fields must be filled before saving","Save Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
+
+                // Job duration must be a positive number
+                try {
+                    if (Double.parseDouble(jobDuration.getText().trim()) <= 0) {
+                        JOptionPane.showMessageDialog(frame, "Job Duration must be greater than 0","Save Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(frame, "Job Duration must be a number","Save Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // Job deadline must be a date that hasn't passed
+                try {
+                    if (LocalDate.parse(jobDeadline.getText().trim()).isBefore(LocalDate.now())) {
+                        JOptionPane.showMessageDialog(frame, "Job Deadline cannot be in the past","Save Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                } catch (DateTimeParseException ex) {
+                    JOptionPane.showMessageDialog(frame, "Job Deadline must be a date (yyyy-MM-dd)","Save Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
+
             try (FileWriter writer = new FileWriter("transactions.txt", true)) {
 
                 writer.write("Time: " + LocalDateTime.now().format(
@@ -96,44 +151,21 @@ public class Main {
                 writer.write("User Type: " + userType.getSelectedItem() + "\n");
 
                 if (userType.getSelectedItem().equals("Owner")) {
-                    // Ben - Testing for empty fields
-                    for (JTextField field : ownerFields) {
-                        if (field.getText().isEmpty()){
-                            JOptionPane.showMessageDialog(frame, "All fields must be filled before saving","Save Error", JOptionPane.ERROR_MESSAGE);
-                            break;
-                        }
-                        else{
-                            writer.write("Owner ID: " + ownerID.getText() + "\n");
-                            writer.write("Vehicle Information: " + vehicleInfo.getText() + "\n");
-                            writer.write("Residency Time: " + residencyTime.getText() + "\n");
-
-                            JOptionPane.showMessageDialog(frame,"Information saved");
-                        }
-                    }
-                } 
+                    // Owner info
+                    writer.write("Owner ID: " + ownerID.getText() + "\n");
+                    writer.write("Vehicle Information: " + vehicleInfo.getText() + "\n");
+                    writer.write("Residency Time: " + residencyTime.getText() + "\n");
+                }
                 if (userType.getSelectedItem().equals("Client")) {
                     // Client info
-                    for (JTextField field : clientFields) {
-                        if (field.getText().isEmpty()){
-                            JOptionPane.showMessageDialog(frame, "All fields must filled before saving","Save Error", JOptionPane.ERROR_MESSAGE);
-                            break;
-                        }
-                        else {
-                            writer.write("Client ID: " + clientID.getText() + "\n");
-                            writer.write("Job Duration: " + jobDuration.getText() + "\n");
-                            writer.write("Job Deadline: " + jobDeadline.getText() + "\n");
-
-                            JOptionPane.showMessageDialog(frame,"Information saved");
-                        }
-                    }
-                }   
-
-
-
+                    writer.write("Client ID: " + clientID.getText() + "\n");
+                    writer.write("Job Duration: " + jobDuration.getText() + "\n");
+                    writer.write("Job Deadline: " + jobDeadline.getText() + "\n");
+                }
 
                 writer.write("----------------------\n");
 
-
+                JOptionPane.showMessageDialog(frame,"Information saved");
 
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(frame,
