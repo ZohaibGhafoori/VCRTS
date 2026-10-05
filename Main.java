@@ -11,7 +11,7 @@ public class Main {
     public static void main(String[] args) {
 
         JFrame frame = new JFrame("VCRTS");
-        frame.setSize(350, 500);
+        frame.setSize(350, 550);
         frame.setMinimumSize(frame.getSize());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
