@@ -39,6 +39,10 @@ public class Main {
         JLabel ownerLabel = new JLabel("Owner Information");
         panel.add(ownerLabel);
 
+        // instruction for Owner
+        JLabel ownerNote = new JLabel("Enter the vehicle owner's information below.");
+        panel.add(ownerNote);
+
         JTextField ownerID = new JTextField();
         JTextField vehicleInfo = new JTextField();
         JTextField residencyTime = new JTextField();
@@ -93,6 +97,7 @@ public class Main {
 
         panel.add(clearClientButton);
 
+
         // Ben - Align elements to the left
         for (java.awt.Component c : panel.getComponents()) {
             JComponent comp = (JComponent) c;
@@ -110,10 +115,12 @@ public class Main {
             }
         }
 
+
         // Ben - Disable GUI elements depending on user type
         userType.addActionListener(s -> {
 
             if (userType.getSelectedItem().equals("Owner")) {
+
                 for (JTextField field : ownerFields) {
                     field.setEnabled(true);
                 }
@@ -124,6 +131,7 @@ public class Main {
             }
 
             else if (userType.getSelectedItem().equals("Client")) {
+
                 for (JTextField field : clientFields) {
                     field.setEnabled(true);
                 }
@@ -143,41 +151,51 @@ public class Main {
 
         saveButton.addActionListener(e -> {
 
-            // Ben - Error Checking and Input Validation
+
+            // Ben - Field entry checks
 
             if (userType.getSelectedItem().equals("Owner")) {
 
+                // Empty fields
                 for (JTextField field : ownerFields) {
+
                     if (field.getText().trim().isEmpty()) {
+
                         JOptionPane.showMessageDialog(
                                 frame,
                                 "All fields must be filled before saving",
                                 "Save Error",
                                 JOptionPane.ERROR_MESSAGE
                         );
+
                         return;
                     }
                 }
 
+                // Residency time must be a positive number
                 try {
+
                     if (Double.parseDouble(residencyTime.getText().trim()) <= 0) {
+
                         JOptionPane.showMessageDialog(
                                 frame,
                                 "Residency Time must be greater than 0",
                                 "Save Error",
                                 JOptionPane.ERROR_MESSAGE
                         );
+
                         return;
                     }
-                }
 
-                catch (NumberFormatException ex) {
+                } catch (NumberFormatException ex) {
+
                     JOptionPane.showMessageDialog(
                             frame,
                             "Residency Time must be a number",
                             "Save Error",
                             JOptionPane.ERROR_MESSAGE
                     );
+
                     return;
                 }
             }
@@ -185,41 +203,52 @@ public class Main {
 
             if (userType.getSelectedItem().equals("Client")) {
 
+                // Empty fields
                 for (JTextField field : clientFields) {
+
                     if (field.getText().trim().isEmpty()) {
+
                         JOptionPane.showMessageDialog(
                                 frame,
                                 "All fields must be filled before saving",
                                 "Save Error",
                                 JOptionPane.ERROR_MESSAGE
                         );
+
                         return;
                     }
                 }
 
+                // Job duration must be a positive number
                 try {
+
                     if (Double.parseDouble(jobDuration.getText().trim()) <= 0) {
+
                         JOptionPane.showMessageDialog(
                                 frame,
                                 "Job Duration must be greater than 0",
                                 "Save Error",
                                 JOptionPane.ERROR_MESSAGE
                         );
+
                         return;
                     }
-                }
 
-                catch (NumberFormatException ex) {
+                } catch (NumberFormatException ex) {
+
                     JOptionPane.showMessageDialog(
                             frame,
                             "Job Duration must be a number",
                             "Save Error",
                             JOptionPane.ERROR_MESSAGE
                     );
+
                     return;
                 }
 
+                // Job deadline must be a date that hasn't passed
                 try {
+
                     if (LocalDate.parse(jobDeadline.getText().trim())
                             .isBefore(LocalDate.now())) {
 
@@ -229,23 +258,23 @@ public class Main {
                                 "Save Error",
                                 JOptionPane.ERROR_MESSAGE
                         );
+
                         return;
                     }
-                }
 
-                catch (DateTimeParseException ex) {
+                } catch (DateTimeParseException ex) {
+
                     JOptionPane.showMessageDialog(
                             frame,
                             "Job Deadline must be a date (yyyy-MM-dd)",
                             "Save Error",
                             JOptionPane.ERROR_MESSAGE
                     );
+
                     return;
                 }
             }
 
-
-            // Joanna - Save information to file
 
             try (FileWriter writer = new FileWriter("transactions.txt", true)) {
 
@@ -254,8 +283,10 @@ public class Main {
 
                 writer.write("User Type: " + userType.getSelectedItem() + "\n");
 
+
                 if (userType.getSelectedItem().equals("Owner")) {
 
+                    // Owner info
                     writer.write("Owner ID: " + ownerID.getText() + "\n");
                     writer.write("Vehicle Information: " + vehicleInfo.getText() + "\n");
                     writer.write("Residency Time: " + residencyTime.getText() + "\n");
@@ -265,8 +296,10 @@ public class Main {
                     }
                 }
 
+
                 if (userType.getSelectedItem().equals("Client")) {
 
+                    // Client info
                     writer.write("Client ID: " + clientID.getText() + "\n");
                     writer.write("Job Duration: " + jobDuration.getText() + "\n");
                     writer.write("Job Deadline: " + jobDeadline.getText() + "\n");
@@ -278,11 +311,13 @@ public class Main {
 
                 writer.write("----------------------\n");
 
-                JOptionPane.showMessageDialog(frame, "Information saved");
+                JOptionPane.showMessageDialog(
+                        frame,
+                        "Information saved"
+                );
 
-            }
+            } catch (IOException ex) {
 
-            catch (IOException ex) {
                 JOptionPane.showMessageDialog(
                         frame,
                         "Could not save to file: " + ex.getMessage(),
