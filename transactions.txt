@@ -1,0 +1,18 @@
+Time: 2026-10-05 09:37:08
+User Type: Owner
+Owner ID: Sd
+Vehicle Information: asd
+Residency Time: 21
+----------------------
+Time: 2026-10-05 09:37:42
+User Type: Client
+Client ID: afdsaf
+Job Duration: 21
+Job Deadline: 2026-12-25
+----------------------
+Time: 2026-10-05 09:39:18
+User Type: Owner
+Owner ID: Ben
+Vehicle Information: Nissan
+Residency Time: 24.1
+----------------------
