@@ -13,11 +13,15 @@ public class Main {
 
     public static void main(String[] args) {
 
-        //FlatLightLaf.setup();
+        FlatLightLaf.setup();
+
+    }
+
+    public static void openMainWindow() {
 
         JFrame frame = new JFrame("VCRTS");
-        frame.setSize(350, 500);
-        frame.setMinimumSize(frame.getSize());
+        frame.setSize(480, 640);
+        frame.setMinimumSize(new java.awt.Dimension(400, 540));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel panel = new JPanel();
@@ -27,7 +31,11 @@ public class Main {
 
         // Zohaib - GUI + Owner Section
 
-        JLabel title = new JLabel("Vehicular Cloud Real Time System");
+        // Ben - Logo at the top
+        java.net.URL logoFile = Main.class.getResource("/images/logo.png");
+        JLabel title = logoFile != null
+                ? new JLabel(new ImageIcon(logoFile))
+                : new JLabel("Vehicular Cloud Real Time System");
         panel.add(title);
 
         JLabel userTypeLabel = new JLabel("Select User Type:");
@@ -66,26 +74,13 @@ public class Main {
         panel.add(residencyTimeLabel);
         panel.add(residencyTime);
 
-        // Button to clear Owner information
-        JButton clearOwnerButton = new JButton("Clear Owner Fields");
-
-        clearOwnerButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                ownerID.setText("");
-                vehicleInfo.setText("");
-                residencyTime.setText("");
-            }
-        });
-
-        panel.add(clearOwnerButton);
 
         // Zohaib - Everything that belongs to the Owner section
         JComponent[] ownerSection = {
                 ownerLabel, ownerNote,
                 ownerIDLabel, ownerID,
                 vehicleInfoLabel, vehicleInfo,
-                residencyTimeLabel, residencyTime,
-                clearOwnerButton
+                residencyTimeLabel, residencyTime
         };
 
 
@@ -116,26 +111,13 @@ public class Main {
         panel.add(jobDeadlineLabel);
         panel.add(jobDeadline);
 
-        // Clear button for Client fields
-        JButton clearClientButton = new JButton("Clear Client Fields");
-
-        clearClientButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                clientID.setText("");
-                jobDuration.setText("");
-                jobDeadline.setText("");
-            }
-        });
-
-        panel.add(clearClientButton);
 
         // Zohaib - Everything that belongs to the Client section
         JComponent[] clientSection = {
                 clientLabel, clientNote,
                 clientIDLabel, clientID,
                 jobDurationLabel, jobDuration,
-                jobDeadlineLabel, jobDeadline,
-                clearClientButton
+                jobDeadlineLabel, jobDeadline
         };
 
 
@@ -393,9 +375,53 @@ public class Main {
             }
         });
 
-        panel.add(saveButton);
+        // Ben - Clear fields button
+        JButton clearButton = new JButton("Clear Fields");
+
+        clearButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                // Clear confirm popup
+                int choice = JOptionPane.showConfirmDialog(
+                        frame,
+                        "Are you sure you want to clear all fields?",
+                        "Clear Fields",
+                        JOptionPane.YES_NO_OPTION
+                );
+
+                if (choice != JOptionPane.YES_OPTION) {
+                    return;
+                }
+
+                JTextField[] fields = userType.getSelectedItem().equals("Owner")
+                        ? ownerFields
+                        : clientFields;
+
+                for (JTextField field : fields) {
+                    field.setText("");
+                }
+            }
+        });
+
+        // Ben - Center Save and Clear buttons
+        JPanel buttonRow = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 0));
+        
+        buttonRow.add(saveButton);
+        buttonRow.add(clearButton);
+
+        buttonRow.setAlignmentX(JComponent.LEFT_ALIGNMENT);
+        buttonRow.setMaximumSize(
+                new java.awt.Dimension(
+                        Integer.MAX_VALUE,
+                        buttonRow.getPreferredSize().height
+                )
+        );
+
+        panel.add(Box.createVerticalStrut(15));
+        panel.add(buttonRow);
 
         frame.add(panel);
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 }
