@@ -7,13 +7,13 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import javax.swing.*;
-import com.formdev.flatlaf.FlatLightLaf;
+
 
 public class Main {
 
     public static void main(String[] args) {
 
-        FlatLightLaf.setup();
+    
 
         // Show the login window first
         LoginFrame.open();
@@ -92,7 +92,7 @@ public class Main {
         JLabel clientNote = new JLabel("Enter the client's information below.");
         panel.add(clientNote);
 
-        // Zohaib - Client fields
+        // Felix - Client fields
         JLabel clientIDLabel = new JLabel("Client ID:");
         panel.add(clientIDLabel);
         panel.add(clientID);
@@ -291,8 +291,16 @@ public class Main {
 
                 try {
 
-                    // Open the file (true means add to the end of the file)
-                    FileWriter writer = new FileWriter("transactions.txt", true);
+                    // Zohaib - Client info goes into this folder 
+                    String fileName = "client_transactions.txt";
+                    
+                    // Zohaib - Owner info goes into this folder
+                    if (userType.getSelectedItem().equals("Owner")) {
+                        fileName = "owner_transactions.txt";
+                    }
+
+                    // Open's the file 
+                    FileWriter writer = new FileWriter(fileName, true);
 
                     writer.write("Time: " + LocalDateTime.now().format(
                             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "\n");

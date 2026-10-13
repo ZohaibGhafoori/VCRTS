@@ -16,3 +16,9 @@ Owner ID: Ben
 Vehicle Information: Nissan
 Residency Time: 24.1
 ----------------------
+Time: 2026-10-13 10:59:29
+User Type: Client
+Client ID: Z
+Job Duration: 1 hours 20 minutes
+Job Deadline: 2026-10-14
+----------------------
