@@ -15,6 +15,8 @@ public class Main {
 
         FlatLightLaf.setup();
 
+        // Show the login window first
+        LoginFrame.open();
     }
 
     public static void openMainWindow() {
@@ -48,18 +50,14 @@ public class Main {
         // Small space
         panel.add(Box.createVerticalStrut(5));
 
-        // Owner section
-        JLabel ownerLabel = new JLabel("Owner Information");
-        panel.add(ownerLabel);
-
         // Small instruction for Owner
         JLabel ownerNote = new JLabel("Enter the vehicle owner's information below.");
         panel.add(ownerNote);
 
         JTextField ownerID = new JTextField();
         JTextField vehicleInfo = new JTextField();
-        JTextField residencyTime = new JTextField();
-        JTextField[] ownerFields = {ownerID, vehicleInfo, residencyTime};
+        DurationInput residencyTime = new DurationInput();
+        JTextField[] ownerFields = {ownerID, vehicleInfo};
 
         // Zohaib - Owner fields
         JLabel ownerIDLabel = new JLabel("Owner ID:");
@@ -70,14 +68,14 @@ public class Main {
         panel.add(vehicleInfoLabel);
         panel.add(vehicleInfo);
 
-        JLabel residencyTimeLabel = new JLabel("Residency Time (hours):");
+        JLabel residencyTimeLabel = new JLabel("Residency Time:");
         panel.add(residencyTimeLabel);
         panel.add(residencyTime);
 
 
         // Zohaib - Everything that belongs to the Owner section
         JComponent[] ownerSection = {
-                ownerLabel, ownerNote,
+                ownerNote,
                 ownerIDLabel, ownerID,
                 vehicleInfoLabel, vehicleInfo,
                 residencyTimeLabel, residencyTime
@@ -87,13 +85,9 @@ public class Main {
         // Felix - Client Section
 
         JTextField clientID = new JTextField();
-        JTextField jobDuration = new JTextField();
+        DurationInput jobDuration = new DurationInput();
         JTextField jobDeadline = new JTextField();
-        JTextField[] clientFields = {clientID, jobDuration, jobDeadline};
-
-        // Zohaib - Client section heading and note
-        JLabel clientLabel = new JLabel("Client Information");
-        panel.add(clientLabel);
+        JTextField[] clientFields = {clientID, jobDeadline};
 
         JLabel clientNote = new JLabel("Enter the client's information below.");
         panel.add(clientNote);
@@ -114,7 +108,7 @@ public class Main {
 
         // Zohaib - Everything that belongs to the Client section
         JComponent[] clientSection = {
-                clientLabel, clientNote,
+                clientNote,
                 clientIDLabel, clientID,
                 jobDurationLabel, jobDuration,
                 jobDeadlineLabel, jobDeadline
@@ -149,6 +143,8 @@ public class Main {
 
                 if (userType.getSelectedItem().equals("Owner")) {
 
+                    frame.setTitle("VCRTS · Owner Panel");
+
                     // Zohaib - Show Owner section
                     for (JComponent comp : ownerSection) {
                         comp.setVisible(true);
@@ -161,6 +157,8 @@ public class Main {
                 }
 
                 else if (userType.getSelectedItem().equals("Client")) {
+
+                    frame.setTitle("VCRTS · Client Panel");
 
                     // Show Client section
                     for (JComponent comp : clientSection) {
@@ -180,6 +178,8 @@ public class Main {
         });
 
         // Zohaib - Starts the program with Owner selected
+        frame.setTitle("VCRTS · Owner Panel");
+
         for (JComponent comp : clientSection) {
             comp.setVisible(false);
         }
@@ -213,26 +213,12 @@ public class Main {
                         }
                     }
 
-                    // Residency time must be a positive number
-                    try {
-
-                        if (Double.parseDouble(residencyTime.getText().trim()) <= 0) {
-
-                            JOptionPane.showMessageDialog(
-                                    frame,
-                                    "Residency Time must be greater than 0",
-                                    "Save Error",
-                                    JOptionPane.ERROR_MESSAGE
-                            );
-
-                            return;
-                        }
-
-                    } catch (NumberFormatException ex) {
+                    // Residency time must be longer than 0
+                    if (residencyTime.totalMinutes() <= 0) {
 
                         JOptionPane.showMessageDialog(
                                 frame,
-                                "Residency Time must be a number",
+                                "Residency Time must be greater than 0",
                                 "Save Error",
                                 JOptionPane.ERROR_MESSAGE
                         );
@@ -260,26 +246,12 @@ public class Main {
                         }
                     }
 
-                    // Job duration must be a positive number
-                    try {
-
-                        if (Double.parseDouble(jobDuration.getText().trim()) <= 0) {
-
-                            JOptionPane.showMessageDialog(
-                                    frame,
-                                    "Job Duration must be greater than 0",
-                                    "Save Error",
-                                    JOptionPane.ERROR_MESSAGE
-                            );
-
-                            return;
-                        }
-
-                    } catch (NumberFormatException ex) {
+                    // Job duration must be longer than 0
+                    if (jobDuration.totalMinutes() <= 0) {
 
                         JOptionPane.showMessageDialog(
                                 frame,
-                                "Job Duration must be a number",
+                                "Job Duration must be greater than 0",
                                 "Save Error",
                                 JOptionPane.ERROR_MESSAGE
                         );
@@ -333,11 +305,12 @@ public class Main {
                         // Owner info
                         writer.write("Owner ID: " + ownerID.getText() + "\n");
                         writer.write("Vehicle Information: " + vehicleInfo.getText() + "\n");
-                        writer.write("Residency Time: " + residencyTime.getText() + "\n");
+                        writer.write("Residency Time: " + residencyTime.describe() + "\n");
 
                         for (JTextField field : ownerFields) {
                             field.setText("");
                         }
+                        residencyTime.clear();
                     }
 
 
@@ -345,12 +318,13 @@ public class Main {
 
                         // Client info
                         writer.write("Client ID: " + clientID.getText() + "\n");
-                        writer.write("Job Duration: " + jobDuration.getText() + "\n");
+                        writer.write("Job Duration: " + jobDuration.describe() + "\n");
                         writer.write("Job Deadline: " + jobDeadline.getText() + "\n");
 
                         for (JTextField field : clientFields) {
                             field.setText("");
                         }
+                        jobDuration.clear();
                     }
 
                     writer.write("----------------------\n");
@@ -393,13 +367,14 @@ public class Main {
                     return;
                 }
 
-                JTextField[] fields = userType.getSelectedItem().equals("Owner")
-                        ? ownerFields
-                        : clientFields;
+                boolean owner = userType.getSelectedItem().equals("Owner");
+                JTextField[] fields = owner ? ownerFields : clientFields;
 
                 for (JTextField field : fields) {
                     field.setText("");
                 }
+
+                (owner ? residencyTime : jobDuration).clear();
             }
         });
 
@@ -423,5 +398,48 @@ public class Main {
         frame.add(panel);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+
+
+    // Ben - Separate hours and minutes boxes, so users don't have to type 8.5 for 8h 30m
+    static class DurationInput extends JPanel {
+
+        private final JSpinner hours = new JSpinner(new SpinnerNumberModel(0, 0, 999, 1));
+        private final JSpinner minutes = new JSpinner(new SpinnerNumberModel(0, 0, 59, 5));
+
+        DurationInput() {
+            setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 0, 0));
+
+            add(hours);
+            add(new JLabel(" hours   "));
+            add(minutes);
+            add(new JLabel(" minutes"));
+
+            setMaximumSize(new java.awt.Dimension(Integer.MAX_VALUE, getPreferredSize().height));
+        }
+
+        int totalMinutes() {
+
+            // Keep numbers typed into a box even if the user hasn't clicked away yet
+            try {
+                hours.commitEdit();
+                minutes.commitEdit();
+            } catch (java.text.ParseException ex) {
+                // Invalid text goes back to the last good value
+            }
+
+            return (Integer) hours.getValue() * 60 + (Integer) minutes.getValue();
+        }
+
+        void clear() {
+            hours.setValue(0);
+            minutes.setValue(0);
+        }
+
+        // Example: "8 hours 30 minutes"
+        String describe() {
+            int total = totalMinutes();
+            return (total / 60) + " hours " + (total % 60) + " minutes";
+        }
     }
 }
