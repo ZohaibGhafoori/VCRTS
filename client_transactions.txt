@@ -4,3 +4,9 @@ Client ID: Z
 Job Duration: 1 hours 5 minutes
 Job Deadline: 2026-10-14
 ----------------------
+Time: 2026-10-25 17:20:15
+User Type: Client
+Client ID: 909099
+Job Duration: 3 hours 0 minutes
+Job Deadline: 2026-11-13
+----------------------

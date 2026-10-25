@@ -4,3 +4,9 @@ Owner ID: Z1
 Vehicle Information: BMW
 Residency Time: 5 hours 0 minutes
 ----------------------
+Time: 2026-10-25 17:20:58
+User Type: Owner
+Owner ID: 898900
+Vehicle Information: Nissan
+Residency Time: 3 hours 0 minutes
+----------------------
