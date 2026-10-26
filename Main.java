@@ -7,13 +7,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import javax.swing.*;
-import com.formdev.flatlaf.FlatLightLaf;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        FlatLightLaf.setup();
         LoginFrame.open();
     }
 
