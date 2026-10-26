@@ -431,7 +431,7 @@ public class Main {
                 hours.commitEdit();
                 minutes.commitEdit();
             } catch (java.text.ParseException ex) {
-                // Invalid text goes back to the last good value
+                // Invalid text goes back to last good value
             }
 
             return (Integer) hours.getValue() * 60 + (Integer) minutes.getValue();
@@ -442,7 +442,6 @@ public class Main {
             minutes.setValue(0);
         }
 
-        // Example: "8 hours 30 minutes"
         String describe() {
             int total = totalMinutes();
             return (total / 60) + " hours " + (total % 60) + " minutes";
