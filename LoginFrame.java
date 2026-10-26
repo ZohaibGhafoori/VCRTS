@@ -12,10 +12,13 @@ public class LoginFrame {
     // Ben - Accounts are saved one per line as username:password
     private static final Path ACCOUNTS_FILE = Paths.get("accounts.txt");
 
+    // VC Controller accounts are private so normal users can't sign in as one
+    private static final Path CONTROLLER_ACCOUNTS_FILE = Paths.get("controller_accounts.txt");
+
     public static void open() {
 
         JFrame frame = new JFrame("VCRTS - Login");
-        frame.setSize(380, 340);
+        frame.setSize(380, 400);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -29,7 +32,7 @@ public class LoginFrame {
                 : new JLabel("Vehicular Cloud Real Time System");
         panel.add(title);
 
-        JLabel note = new JLabel("Log in or create a new account.");
+        JLabel note = new JLabel("Log in or create a new account for the selected role.");
         panel.add(note);
 
         panel.add(Box.createVerticalStrut(5));
@@ -43,6 +46,12 @@ public class LoginFrame {
         panel.add(passwordLabel);
         JPasswordField password = new JPasswordField();
         panel.add(password);
+
+        JLabel roleLabel = new JLabel("Sign in as:");
+        panel.add(roleLabel);
+        String[] roles = {"Owner / Client", "VC Controller"};
+        JComboBox<String> role = new JComboBox<String>(roles);
+        panel.add(role);
 
         panel.add(Box.createVerticalStrut(10));
 
@@ -58,7 +67,7 @@ public class LoginFrame {
             JComponent comp = (JComponent) c;
             comp.setAlignmentX(JComponent.LEFT_ALIGNMENT);
 
-            if (comp instanceof JTextField || comp instanceof JButton) {
+            if (comp instanceof JTextField || comp instanceof JButton || comp instanceof JComboBox) {
                 comp.setMaximumSize(
                         new java.awt.Dimension(
                                 Integer.MAX_VALUE,
@@ -80,6 +89,10 @@ public class LoginFrame {
                 String name = username.getText().toLowerCase().trim();
                 String pass = new String(password.getPassword());
 
+                // Which role the user picked
+                String selectedRole = (String) role.getSelectedItem();
+                Path file = getAccountsFile(selectedRole);
+
                 if (name.isEmpty() || pass.isEmpty()) {
                     showError(frame, "Enter a username and password");
                     return;
@@ -87,7 +100,7 @@ public class LoginFrame {
 
                 try {
 
-                    if (!checkLogin(name, pass)) {
+                    if (!checkLogin(file, name, pass)) {
                         showError(frame, "Incorrect username or password");
                         password.setText("");
                         return;
@@ -98,9 +111,16 @@ public class LoginFrame {
                     return;
                 }
 
-                // Close the login window and open the main program
+                // Close the login window and open the window for the chosen role
                 frame.dispose();
-                Main.openMainWindow();
+
+                if (selectedRole.equals("VC Controller")) {
+                    VCController controller = new VCController(name);
+                    ControllerFrame.open(controller);
+                }
+                else {
+                    Main.openMainWindow();
+                }
             }
         });
 
@@ -111,6 +131,10 @@ public class LoginFrame {
 
                 String name = username.getText().toLowerCase().trim();
                 String pass = new String(password.getPassword());
+
+                // Save the account under the role the user picked
+                String selectedRole = (String) role.getSelectedItem();
+                Path file = getAccountsFile(selectedRole);
 
                 // Colons separate the parts of each line in accounts.txt
                 if (name.isEmpty() || name.contains(":") || name.contains(" ")) {
@@ -125,7 +149,7 @@ public class LoginFrame {
 
                 try {
 
-                    if (findAccount(name) != null) {
+                    if (findAccount(file, name) != null) {
                         showError(frame, "That username is already taken");
                         return;
                     }
@@ -155,7 +179,7 @@ public class LoginFrame {
                 }
 
                 try {
-                    saveAccount(name, pass);
+                    saveAccount(file, name, pass);
 
                 } catch (IOException ex) {
                     showError(frame, "Could not save account: " + ex.getMessage());
@@ -187,14 +211,26 @@ public class LoginFrame {
     }
 
 
-    // Returns the saved username and password, or null if there isn't one
-    private static String[] findAccount(String name) throws IOException {
+    // Each role has its own accounts file
+    private static Path getAccountsFile(String selectedRole) {
 
-        if (!Files.exists(ACCOUNTS_FILE)) {
+        if (selectedRole.equals("VC Controller")) {
+            return CONTROLLER_ACCOUNTS_FILE;
+        }
+        else {
+            return ACCOUNTS_FILE;
+        }
+    }
+
+
+    // Returns the saved username and password, or null if there isn't one
+    private static String[] findAccount(Path file, String name) throws IOException {
+
+        if (!Files.exists(file)) {
             return null;
         }
 
-        for (String line : Files.readAllLines(ACCOUNTS_FILE)) {
+        for (String line : Files.readAllLines(file)) {
             String[] parts = line.split(":", 2);
 
             if (parts.length == 2 && parts[0].equals(name)) {
@@ -206,16 +242,16 @@ public class LoginFrame {
     }
 
 
-    private static boolean checkLogin(String name, String pass) throws IOException {
+    private static boolean checkLogin(Path file, String name, String pass) throws IOException {
 
-        String[] account = findAccount(name);
+        String[] account = findAccount(file, name);
         return account != null && account[1].equals(pass);
     }
 
 
-    private static void saveAccount(String name, String pass) throws IOException {
+    private static void saveAccount(Path file, String name, String pass) throws IOException {
 
-        FileWriter writer = new FileWriter(ACCOUNTS_FILE.toFile(), true);
+        FileWriter writer = new FileWriter(file.toFile(), true);
         writer.write(name + ":" + pass + "\n");
         writer.close();
     }

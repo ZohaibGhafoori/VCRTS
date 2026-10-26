@@ -45,11 +45,10 @@ public class Main {
         JComboBox<String> userType = new JComboBox<String>(options);
         panel.add(userType);
 
-        // Small space
         panel.add(Box.createVerticalStrut(5));
 
         // Small instruction for Owner
-        JLabel ownerNote = new JLabel("Enter the vehicle owner's information below.");
+        JLabel ownerNote = new JLabel("Enter vehicle owner information below.");
         panel.add(ownerNote);
 
         JTextField ownerID = new JTextField();
@@ -87,7 +86,7 @@ public class Main {
         JTextField jobDeadline = new JTextField();
         JTextField[] clientFields = {clientID, jobDeadline};
 
-        JLabel clientNote = new JLabel("Enter the client's information below.");
+        JLabel clientNote = new JLabel("Enter client information below.");
         panel.add(clientNote);
 
         // Felix - Client fields
