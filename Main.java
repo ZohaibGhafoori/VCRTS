@@ -354,7 +354,6 @@ public class Main {
                 }
             }
         });
-<<<<<<< Updated upstream
 
         // Ben - Clear fields button
         JButton clearButton = new JButton("Clear Fields");
@@ -450,5 +449,3 @@ public class Main {
         }
     }
 }
-=======
->>>>>>> Stashed changes
