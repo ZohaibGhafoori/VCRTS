@@ -10,3 +10,9 @@ Client ID: 909099
 Job Duration: 3 hours 0 minutes
 Job Deadline: 2026-11-13
 ----------------------
+Time: 2026-10-28 14:16:35
+User Type: Client
+Client ID: Zohaib1
+Job Duration: 5 hours 30 minutes
+Job Deadline: 2026-11-19
+----------------------

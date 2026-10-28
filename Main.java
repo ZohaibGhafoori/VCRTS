@@ -295,6 +295,7 @@ public class Main {
                     }
 
                     // Open's the file 
+                    System.out.println("Saving to: " + new java.io.File(fileName).getAbsolutePath());
                     FileWriter writer = new FileWriter(fileName, true);
 
                     writer.write("Time: " + LocalDateTime.now().format(
@@ -304,6 +305,26 @@ public class Main {
 
 
                     if (userType.getSelectedItem().equals("Owner")) {
+
+                        // Zohaib - Connect Owner and Vehicle classes
+                        VehicleOwner owner = new VehicleOwner(
+                                ownerID.getText(),
+                                ""
+                        );
+
+                        Vehicle vehicle = new Vehicle(
+                                "",
+                                vehicleInfo.getText(),
+                                residencyTime.totalMinutes() / 60.0,
+                                "Unknown",
+                                "Unknown"
+                        );
+
+                        owner.rentVehicle(vehicle);
+
+                        // Check the connection
+                        System.out.println("Owner ID: " + owner.getOwnerID());
+                        System.out.println("Vehicle: " + owner.getVehicle().getVehicleInfo());
 
                         // Owner info
                         writer.write("Owner ID: " + ownerID.getText() + "\n");
