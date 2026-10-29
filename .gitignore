@@ -6,3 +6,4 @@ bin/
 transactions.txt
 accounts.txt
 controller_accounts.txt
+owner_transactions.txt
