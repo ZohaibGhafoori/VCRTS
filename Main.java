@@ -429,7 +429,7 @@ public class Main {
     static class DurationInput extends JPanel {
 
         private final JSpinner hours = new JSpinner(new SpinnerNumberModel(0, 0, 999, 1));
-        private final JSpinner minutes = new JSpinner(new SpinnerNumberModel(0, 0, 59, 5));
+        private final JSpinner minutes = new JSpinner(new SpinnerNumberModel(0, 0, 59, 1));
 
         DurationInput() {
             setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 0, 0));
