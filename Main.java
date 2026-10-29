@@ -1,3 +1,4 @@
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileWriter;
@@ -75,6 +76,10 @@ public class Main {
 
         JTextField ownerID = new JTextField();
         JTextField vehicleInfo = new JTextField();
+
+        // Zohaib - Vehicle type dropdown
+        String[] vehicleTypes = {"Sedan", "SUV", "Coupe", "Motorcycle", "Other"};
+        JComboBox<String> vehicleType = new JComboBox<String>(vehicleTypes);
         DurationInput residencyTime = new DurationInput();
         JTextField[] ownerFields = {ownerID, vehicleInfo};
 
@@ -87,6 +92,11 @@ public class Main {
         panel.add(vehicleInfoLabel);
         panel.add(vehicleInfo);
 
+        // Zohaib - Show vehicle type dropdown
+        JLabel vehicleTypeLabel = new JLabel("Vehicle Type:");
+        panel.add(vehicleTypeLabel);
+        panel.add(vehicleType);
+
         JLabel residencyTimeLabel = new JLabel("Residency Time:");
         panel.add(residencyTimeLabel);
         panel.add(residencyTime);
@@ -97,6 +107,7 @@ public class Main {
                 ownerNote,
                 ownerIDLabel, ownerID,
                 vehicleInfoLabel, vehicleInfo,
+                vehicleTypeLabel, vehicleType,
                 residencyTimeLabel, residencyTime
         };
 
@@ -372,6 +383,10 @@ public class Main {
                         // Owner info
                         writer.write("Owner ID: " + ownerID.getText() + "\n");
                         writer.write("Vehicle Information: " + vehicleInfo.getText() + "\n");
+
+                        // Zohaib - Save selected vehicle type
+                        writer.write("Vehicle Type: " + vehicleType.getSelectedItem() + "\n");
+
                         writer.write("Residency Time: " + residencyTime.describe() + "\n");
 
                         for (JTextField field : ownerFields) {

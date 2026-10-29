@@ -23,3 +23,10 @@ Owner ID: Joanna
 Vehicle Information: Nissan
 Residency Time: 2 hours 5 minutes
 ----------------------
+Time: 2026-10-29 11:30:40
+User Type: Owner
+Owner ID: 550
+Vehicle Information: BMW X6M 
+Vehicle Type: Sedan
+Residency Time: 5 hours 0 minutes
+----------------------
