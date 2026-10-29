@@ -113,14 +113,7 @@ public class LoginFrame {
 
                 // Close the login window and open the window for the chosen role
                 frame.dispose();
-
-                if (selectedRole.equals("VC Controller")) {
-                    VCController controller = new VCController(name);
-                    ControllerFrame.open(controller);
-                }
-                else {
-                    Main.openMainWindow();
-                }
+                openRoleWindow(selectedRole, name);
             }
         });
 
@@ -186,11 +179,8 @@ public class LoginFrame {
                     return;
                 }
 
-                JOptionPane.showMessageDialog(
-                        frame,
-                        "Account created. You can now log in."
-                );
-                password.setText("");
+                frame.dispose();
+                openRoleWindow(selectedRole, name);
             }
         });
 
@@ -198,6 +188,19 @@ public class LoginFrame {
         frame.add(panel);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+
+
+    // Opens the window for the chosen user type
+    private static void openRoleWindow(String selectedRole, String name) {
+
+        if (selectedRole.equals("VC Controller")) {
+            VCController controller = new VCController(name);
+            ControllerFrame.open(controller);
+        }
+        else {
+            Main.openMainWindow();
+        }
     }
 
 
