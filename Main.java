@@ -29,12 +29,36 @@ public class Main {
 
         // Zohaib - GUI + Owner Section
 
-        // Ben - Logo at the top
+        // Back button to return to log in page
+        JButton backButton = new JButton("Log Out");
+
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+                LoginFrame.open();
+            }
+        });
+
+        // Logo
         java.net.URL logoFile = Main.class.getResource("/images/logo.png");
         JLabel title = logoFile != null
                 ? new JLabel(new ImageIcon(logoFile))
                 : new JLabel("Vehicular Cloud Real Time System");
-        panel.add(title);
+
+        JPanel topRow = new JPanel(new java.awt.BorderLayout());
+        topRow.add(title, java.awt.BorderLayout.WEST);
+
+        JPanel buttonHolder = new JPanel(new java.awt.GridBagLayout());
+        buttonHolder.add(backButton);
+        topRow.add(buttonHolder, java.awt.BorderLayout.EAST);
+
+        topRow.setMaximumSize(
+                new java.awt.Dimension(
+                        Integer.MAX_VALUE,
+                        topRow.getPreferredSize().height
+                )
+        );
+        panel.add(topRow);
 
         JLabel userTypeLabel = new JLabel("Select User Type:");
         panel.add(userTypeLabel);
@@ -429,7 +453,7 @@ public class Main {
     static class DurationInput extends JPanel {
 
         private final JSpinner hours = new JSpinner(new SpinnerNumberModel(0, 0, 999, 1));
-        private final JSpinner minutes = new JSpinner(new SpinnerNumberModel(0, 0, 59, 5));
+        private final JSpinner minutes = new JSpinner(new SpinnerNumberModel(0, 0, 59, 1));
 
         DurationInput() {
             setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 0, 0));
