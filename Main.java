@@ -124,13 +124,32 @@ public class Main {
         panel.add(jobDeadlineLabel);
         panel.add(jobDeadline);
 
+        // Job priority
+        JLabel jobPriorityLabel = new JLabel("Job Priority:");
+        panel.add(jobPriorityLabel);
+
+        JSpinner jobPriority = new JSpinner(new SpinnerNumberModel(
+                Job.DEFAULT_PRIORITY, Job.HIGHEST_PRIORITY, Job.LOWEST_PRIORITY, 1));
+
+        // Keep the box small
+        JPanel jobPriorityRow = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 0, 0));
+        jobPriorityRow.add(jobPriority);
+        jobPriorityRow.setMaximumSize(
+                new java.awt.Dimension(
+                        Integer.MAX_VALUE,
+                        jobPriorityRow.getPreferredSize().height
+                )
+        );
+        panel.add(jobPriorityRow);
+
 
         // Zohaib - Everything that belongs to the Client section
         JComponent[] clientSection = {
                 clientNote,
                 clientIDLabel, clientID,
                 jobDurationLabel, jobDuration,
-                jobDeadlineLabel, jobDeadline
+                jobDeadlineLabel, jobDeadline,
+                jobPriorityLabel, jobPriorityRow
         };
 
 
@@ -364,15 +383,24 @@ public class Main {
 
                     if (userType.getSelectedItem().equals("Client")) {
 
+                        // Save what was typed in the priority box
+                        try {
+                            jobPriority.commitEdit();
+                        } catch (java.text.ParseException ex) {
+                            // Bad input keeps the old value
+                        }
+
                         // Client info
                         writer.write("Client ID: " + clientID.getText() + "\n");
                         writer.write("Job Duration: " + jobDuration.describe() + "\n");
                         writer.write("Job Deadline: " + jobDeadline.getText() + "\n");
+                        writer.write("Job Priority: " + jobPriority.getValue() + "\n");
 
                         for (JTextField field : clientFields) {
                             field.setText("");
                         }
                         jobDuration.clear();
+                        jobPriority.setValue(Job.DEFAULT_PRIORITY);
                     }
 
                     writer.write("----------------------\n");
@@ -423,6 +451,7 @@ public class Main {
                 }
 
                 (owner ? residencyTime : jobDuration).clear();
+                jobPriority.setValue(Job.DEFAULT_PRIORITY);
             }
         });
 

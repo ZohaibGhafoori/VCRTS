@@ -1,5 +1,9 @@
 public class Job {
-    
+
+    public static final int HIGHEST_PRIORITY = 1;
+    public static final int LOWEST_PRIORITY = 10;
+    public static final int DEFAULT_PRIORITY = 5;
+
     private static int counter =1;
 
     private String jobID;
@@ -8,7 +12,7 @@ public class Job {
     private String jobdDeadline;
     private String jobStatus;
     private int priority;
-    private int watingTime;;
+    private int waitingTime;
     private int completionTime;
 
     public Job(String clientID, int jobduration, String jobdDeadline, String jobStatus, int priority) {
@@ -49,11 +53,11 @@ public class Job {
         this.priority = priority;
     }
 
-    public int getWatingTime() {
-        return watingTime;
+    public int getWaitingTime() {
+        return waitingTime;
     }
-    public void setWatingTime(int watingTime) {
-        this.watingTime = watingTime;
+    public void setWaitingTime(int waitingTime) {
+        this.waitingTime = waitingTime;
     }
 
     public int getCompletionTime() {
@@ -85,7 +89,7 @@ public class Job {
                 + "Job Deadline: " + jobdDeadline + "\n"
                 + "Job Status: " + jobStatus + "\n"
                 + "Job Priority: " + priority + "\n"
-                + "Job Waiting Time: " + watingTime + "\n"
+                + "Job Waiting Time: " + waitingTime + "\n"
                 + "Job Completion Time: " + completionTime + "\n";
                 
     }
