@@ -18,6 +18,7 @@ public class Main {
 
     public static void openMainWindow() {
 
+
         JFrame frame = new JFrame("VCRTS");
         frame.setSize(480, 640);
         frame.setMinimumSize(new java.awt.Dimension(400, 540));
@@ -407,6 +408,9 @@ public class Main {
 
                         // Client info
                         writer.write("Client ID: " + clientID.getText() + "\n");
+                        String jobID = generateJobID();
+                        writer.write("Job ID: " + jobID + "\n");
+        
                         writer.write("Job Duration: " + jobDuration.describe() + "\n");
                         writer.write("Job Deadline: " + jobDeadline.getText() + "\n");
                         writer.write("Job Priority: " + jobPriority.getValue() + "\n");
@@ -491,6 +495,31 @@ public class Main {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
+
+    //Joanna - Generates unique JobID for each job submitted
+    static String generateJobID() {
+        String counterFile = "job_id_counter.txt";
+        int next = 1;
+
+        java.io.File file = new java.io.File(counterFile);
+
+        if (file.exists()) {
+            try (java.util.Scanner scanner = new java.util.Scanner(file)) {
+                if (scanner.hasNextInt()) {
+                    next = scanner.nextInt() + 1;
+                }
+            } catch (IOException ex) {
+
+            }
+        }
+        try(FileWriter counterWriter = new FileWriter(counterFile, false)) {
+            counterWriter.write(String.valueOf(next));
+        } catch (IOException ex) {
+
+        }
+        return String.format("Job%d", next);
+    }
+
 
 
     // Ben - Separate hours and minutes boxes, so users don't have to type 8.5 for 8h 30m

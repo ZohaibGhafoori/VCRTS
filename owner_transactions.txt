@@ -30,3 +30,10 @@ Vehicle Information: BMW X6M
 Vehicle Type: Sedan
 Residency Time: 5 hours 0 minutes
 ----------------------
+Time: 2026-10-31 16:11:21
+User Type: Owner
+Owner ID: JA
+Vehicle Information: GMC
+Vehicle Type: SUV
+Residency Time: 4 hours 10 minutes
+----------------------
