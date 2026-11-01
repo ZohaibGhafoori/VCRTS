@@ -6,19 +6,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Client {
-    
-private String clientId;
-private List<Job> jobList = new ArrayList<>();
+public class Client extends User {
 
-public Client(String clientId) {
-    this.clientId = clientId;
-}
+    private List<Job> jobList = new ArrayList<>();
 
-public String getClientId() {
-    return clientId;
-}
-public void setClientId(String clientId) { this.clientId = clientId; }
+    public Client(String clientID) {
+        super(clientID);
+    }
+
+    public String getUserType() {
+        return "Client";
+    }
 
     public void addJob(Job job) {
         jobList.add(job);
@@ -47,8 +45,8 @@ public void setClientId(String clientId) { this.clientId = clientId; }
         try {
             writer.write("Time: " + LocalDateTime.now().format(
                     DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "\n");
-            writer.write("User Type: Client\n");
-            writer.write("Client ID: " + clientId + "\n");
+            writer.write("User Type: " + getUserType() + "\n");
+            writer.write("Client ID: " + getUserID() + "\n");
             writer.write(j.toRecord());
         } catch (IOException ex) {
            

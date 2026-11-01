@@ -1,24 +1,15 @@
-public class VehicleOwner {
+public class VehicleOwner extends User {
 
     // Owner information
-    private String ownerID;
-    private String name;
     private Vehicle vehicle;
 
     // Constructor
-    public VehicleOwner(String ownerID, String name) {
-        this.ownerID = ownerID;
-        this.name = name;
+    public VehicleOwner(String ownerID) {
+        super(ownerID);
     }
 
-    // Get Owner ID
-    public String getOwnerID() {
-        return ownerID;
-    }
-
-    // Get Owner Name
-    public String getName() {
-        return name;
+    public String getUserType() {
+        return "Owner";
     }
 
     // Rent a vehicle

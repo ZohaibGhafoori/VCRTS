@@ -362,10 +362,7 @@ public class Main {
                     if (userType.getSelectedItem().equals("Owner")) {
 
                         // Zohaib - Connect Owner and Vehicle classes
-                        VehicleOwner owner = new VehicleOwner(
-                                ownerID.getText(),
-                                ""
-                        );
+                        VehicleOwner owner = new VehicleOwner(ownerID.getText());
 
                         Vehicle vehicle = new Vehicle(
                                 "",
@@ -378,7 +375,7 @@ public class Main {
                         owner.rentVehicle(vehicle);
 
                         // Check the connection
-                        System.out.println("Owner ID: " + owner.getOwnerID());
+                        System.out.println("Owner ID: " + owner.getUserID());
                         System.out.println("Vehicle: " + owner.getVehicle().getVehicleInfo());
 
                         // Owner info
