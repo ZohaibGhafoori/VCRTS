@@ -13,10 +13,12 @@ public class Main {
 
     public static void main(String[] args) {
 
-        LoginFrame.open();
+        VCController controller = new VCController("VC");
+
+        LoginFrame.open(controller);
     }
 
-    public static void openMainWindow() {
+    public static void openMainWindow(VCController controller) {
 
 
         JFrame frame = new JFrame("VCRTS");
@@ -37,7 +39,7 @@ public class Main {
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                LoginFrame.open();
+                LoginFrame.open(controller);
             }
         });
 

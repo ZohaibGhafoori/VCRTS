@@ -4,7 +4,7 @@ import javax.swing.*;
 
 public class ControllerFrame {
 
-    public static void open(VCController controller) {
+    public static void open(VCController controller, String username) {
 
         JFrame frame = new JFrame("VCRTS · Controller Panel");
         frame.setSize(380, 340);
@@ -21,7 +21,7 @@ public class ControllerFrame {
                 : new JLabel("Vehicular Cloud Real Time System");
         panel.add(title);
 
-        JLabel signedIn = new JLabel("Signed in as controller: " + controller.getControllerID());
+        JLabel signedIn = new JLabel("Signed in as controller: " + username);
         panel.add(signedIn);
 
         panel.add(Box.createVerticalStrut(5));
@@ -68,7 +68,7 @@ public class ControllerFrame {
         logoutButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                LoginFrame.open();
+                LoginFrame.open(controller);
             }
         });
 

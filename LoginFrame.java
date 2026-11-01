@@ -15,7 +15,7 @@ public class LoginFrame {
     // VC Controller accounts are private so normal users can't sign in as one
     private static final Path CONTROLLER_ACCOUNTS_FILE = Paths.get("controller_accounts.txt");
 
-    public static void open() {
+    public static void open(VCController controller) {
 
         JFrame frame = new JFrame("VCRTS - Login");
         frame.setSize(380, 400);
@@ -113,7 +113,7 @@ public class LoginFrame {
 
                 // Close the login window and open the window for the chosen role
                 frame.dispose();
-                openRoleWindow(selectedRole, name);
+                openRoleWindow(selectedRole, name, controller);
             }
         });
 
@@ -180,7 +180,7 @@ public class LoginFrame {
                 }
 
                 frame.dispose();
-                openRoleWindow(selectedRole, name);
+                openRoleWindow(selectedRole, name, controller);
             }
         });
 
@@ -192,14 +192,13 @@ public class LoginFrame {
 
 
     // Opens the window for the chosen user type
-    private static void openRoleWindow(String selectedRole, String name) {
+    private static void openRoleWindow(String selectedRole, String name, VCController controller) {
 
         if (selectedRole.equals("VC Controller")) {
-            VCController controller = new VCController(name);
-            ControllerFrame.open(controller);
+            ControllerFrame.open(controller, name);
         }
         else {
-            Main.openMainWindow();
+            Main.openMainWindow(controller);
         }
     }
 
