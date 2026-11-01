@@ -1,10 +1,13 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
 public class Job {
 
     public static final int HIGHEST_PRIORITY = 1;
     public static final int LOWEST_PRIORITY = 10;
     public static final int DEFAULT_PRIORITY = 5;
-
-    private static int counter =1;
 
     private String jobID;
     private Client client;
@@ -16,15 +19,41 @@ public class Job {
     private int waitingTime;
     private int completionTime;
 
-    public Job(int jobDuration, String jobDeadline, int priority) {
-        this.jobID = "J" + counter;
-        counter = counter + 1;
-
+    public Job(String jobID, int jobDuration, String jobDeadline, int priority) {
+        this.jobID = jobID;
         this.jobDuration = jobDuration;
         this.jobDeadline = jobDeadline;
         this.jobStatus = "Pending";
         this.priority = priority;
         this.redundancyLevel = 1;
+    }
+
+    //Joanna - Generates unique JobID for each job submitted
+    static String generateJobID() {
+        String counterFile = "job_id_counter.txt";
+        int next = 1;
+
+        File file = new File(counterFile);
+
+        if (file.exists()) {
+            try {
+                Scanner scanner = new Scanner(file);
+                if (scanner.hasNextInt()) {
+                    next = scanner.nextInt() + 1;
+                }
+                scanner.close();
+            } catch (IOException ex) {
+                System.out.println("Could not read the job ID counter: " + ex.getMessage());
+            }
+        }
+        try {
+            FileWriter counterWriter = new FileWriter(counterFile, false);
+            counterWriter.write(String.valueOf(next));
+            counterWriter.close();
+        } catch (IOException ex) {
+            System.out.println("Could not save the job ID counter: " + ex.getMessage());
+        }
+        return "Job" + next;
     }
 
     public String getJobID() {

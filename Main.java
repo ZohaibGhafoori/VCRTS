@@ -408,7 +408,7 @@ public class Main {
 
                         // Client info
                         writer.write("Client ID: " + clientID.getText() + "\n");
-                        String jobID = generateJobID();
+                        String jobID = Job.generateJobID();
                         writer.write("Job ID: " + jobID + "\n");
         
                         writer.write("Job Duration: " + jobDuration.describe() + "\n");
@@ -496,29 +496,6 @@ public class Main {
         frame.setVisible(true);
     }
 
-    //Joanna - Generates unique JobID for each job submitted
-    static String generateJobID() {
-        String counterFile = "job_id_counter.txt";
-        int next = 1;
-
-        java.io.File file = new java.io.File(counterFile);
-
-        if (file.exists()) {
-            try (java.util.Scanner scanner = new java.util.Scanner(file)) {
-                if (scanner.hasNextInt()) {
-                    next = scanner.nextInt() + 1;
-                }
-            } catch (IOException ex) {
-
-            }
-        }
-        try(FileWriter counterWriter = new FileWriter(counterFile, false)) {
-            counterWriter.write(String.valueOf(next));
-        } catch (IOException ex) {
-
-        }
-        return String.format("Job%d", next);
-    }
 
 
 
