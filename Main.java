@@ -364,8 +364,6 @@ public class Main {
                     if (userType.getSelectedItem().equals("Owner")) {
 
                         // Zohaib - Connect Owner and Vehicle classes
-                        VehicleOwner owner = new VehicleOwner(ownerID.getText());
-
                         String selectedType = (String) vehicleType.getSelectedItem();
 
                         Vehicle vehicle = new Vehicle(
@@ -377,11 +375,11 @@ public class Main {
                                 "Unknown"
                         );
 
-                        owner.rentVehicle(vehicle);
+                        controller.registerVehicle(ownerID.getText(), vehicle);
 
                         // Check the connection
                         System.out.println("Owner ID: " + vehicle.getOwner().getUserID());
-                        System.out.println("Vehicles: " + owner.getVehicles().size());
+                        System.out.println("Vehicles: " + vehicle.getOwner().getVehicles().size());
 
                         // Owner info
                         writer.write("Owner ID: " + ownerID.getText() + "\n");
@@ -416,6 +414,17 @@ public class Main {
                         writer.write("Job Duration: " + jobDuration.describe() + "\n");
                         writer.write("Job Deadline: " + jobDeadline.getText() + "\n");
                         writer.write("Job Priority: " + jobPriority.getValue() + "\n");
+
+                        int priority = Integer.parseInt(jobPriority.getValue().toString());
+
+                        Job job = new Job(
+                                jobID,
+                                jobDuration.totalMinutes(),
+                                jobDeadline.getText(),
+                                priority
+                        );
+
+                        controller.addJob(clientID.getText(), job);
 
                         for (JTextField field : clientFields) {
                             field.setText("");
