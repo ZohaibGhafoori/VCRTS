@@ -1,9 +1,10 @@
 *.class
 bin/
-.project
 .settings/
 .DS_Store
 transactions.txt
+client_transactions.txt
+owner_transactions.txt
+job_id_counter.txt
 accounts.txt
 controller_accounts.txt
-owner_transactions.txt
