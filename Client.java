@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class client {
+public class Client {
     
 private String clientId;
 private List<Job> jobList = new ArrayList<>();
 
-public client(String clientId) {
+public Client(String clientId) {
     this.clientId = clientId;
 }
 
