@@ -47,6 +47,49 @@ public class VCController {
         return completedJobs;
     }
 
+    // **PRIORITY SCHEDULING** Sorts jobs by priority and finds their waiting and completion times
+    public List<Job> calculateCompletionTimes() {
+        List<Job> schedule = new ArrayList<Job>();
+
+        for (int i = 0; i < jobList.size(); i++) {
+            Job job = jobList.get(i);
+            int position = 0;
+
+            // Same priority jobs stay in order of submission
+            while (position < schedule.size() && schedule.get(position).getPriority() <= job.getPriority()) {
+                position++;
+            }
+
+            schedule.add(position, job);
+        }
+
+        int currentTime = 0;
+
+        for (int i = 0; i < schedule.size(); i++) {
+            Job job = schedule.get(i);
+
+            job.setWaitingTime(currentTime);
+            currentTime = currentTime + job.getJobDuration();
+            job.setCompletionTime(currentTime);
+        }
+
+        return schedule;
+    }
+
+    public double getAverageWaitingTime(List<Job> schedule) {
+        if (schedule.size() == 0) {
+            return 0;
+        }
+
+        double total = 0;
+
+        for (int i = 0; i < schedule.size(); i++) {
+            total = total + schedule.get(i).getWaitingTime();
+        }
+
+        return total / schedule.size();
+    }
+
     // Register a vehicle
     public void registerVehicle(String ownerID, Vehicle vehicle) {
         VehicleOwner owner = findOwner(ownerID);
