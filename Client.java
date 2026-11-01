@@ -3,26 +3,29 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class Client extends User {
 
-    private List<Job> jobList = new ArrayList<>();
+    // A client can submit any number of jobs
+    private ArrayList<Job> jobList;
 
     public Client(String clientID) {
         super(clientID);
+        jobList = new ArrayList<Job>();
     }
 
     public String getUserType() {
         return "Client";
     }
 
+    // Add a job and link it back to this client
     public void addJob(Job job) {
         jobList.add(job);
+        job.setClient(this);
     }
 
-    public List<Job> getJobList() {
+    public ArrayList<Job> getJobList() {
         return jobList;
     }
 

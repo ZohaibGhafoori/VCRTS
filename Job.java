@@ -7,55 +7,79 @@ public class Job {
     private static int counter =1;
 
     private String jobID;
-    private String clientID;
-    private int jobduration;
-    private String jobdDeadline;
+    private Client client;
+    private int jobDuration;
+    private String jobDeadline;
     private String jobStatus;
     private int priority;
+    private int redundancyLevel;
     private int waitingTime;
     private int completionTime;
 
-    public Job(String clientID, int jobduration, String jobdDeadline, String jobStatus, int priority) {
-        this.jobID = "J" + counter++;
-        this.clientID = clientID;
-        this.jobduration = jobduration;
-        this.jobdDeadline = jobdDeadline;
+    public Job(int jobDuration, String jobDeadline, int priority) {
+        this.jobID = "J" + counter;
+        counter = counter + 1;
+
+        this.jobDuration = jobDuration;
+        this.jobDeadline = jobDeadline;
         this.jobStatus = "Pending";
         this.priority = priority;
-
+        this.redundancyLevel = 1;
     }
+
     public String getJobID() {
         return jobID;
-    
-    }
-    public String getClientID() {
-            return clientID;
     }
 
-    public int getJobduration() {
-        return jobduration;
-    }
-    public void setJobduration(int jobduration) {
-        this.jobduration = jobduration;
+    public Client getClient() {
+        return client;
     }
 
-    public String getJobdDeadline() {
-        return jobdDeadline;
+    public void setClient(Client client) {
+        this.client = client;
     }
-    public void setJobdDeadline(String jobdDeadline) {
-        this.jobdDeadline = jobdDeadline;
+
+    public int getJobDuration() {
+        return jobDuration;
+    }
+
+    public void setJobDuration(int jobDuration) {
+        this.jobDuration = jobDuration;
+    }
+
+    public String getJobDeadline() {
+        return jobDeadline;
+    }
+
+    public void setJobDeadline(String jobDeadline) {
+        this.jobDeadline = jobDeadline;
     }
 
     public int getPriority() {
         return priority;
     }
+
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+
+    public int getRedundancyLevel() {
+        return redundancyLevel;
+    }
+
+    // A job always needs at least one vehicle
+    public void setRedundancyLevel(int redundancyLevel) {
+        if (redundancyLevel < 1) {
+            redundancyLevel = 1;
+        }
+
+        this.redundancyLevel = redundancyLevel;
     }
 
     public int getWaitingTime() {
         return waitingTime;
     }
+
     public void setWaitingTime(int waitingTime) {
         this.waitingTime = waitingTime;
     }
@@ -63,6 +87,7 @@ public class Job {
     public int getCompletionTime() {
         return completionTime;
     }
+
     public void setCompletionTime(int completionTime) {
         this.completionTime = completionTime;
     }
@@ -72,27 +97,24 @@ public class Job {
     }
 
     public boolean isCompleted() {
-        return "Completed".equals(jobStatus);
+        return jobStatus.equals("Completed");
     }
 
     public String trackJob() {
         return "Job " + jobID + " is " + jobStatus;
     }
 
-    public String getdurationText() {
-        return(jobduration/60) + " hours  " + (jobduration%60) + " minutes";
+    public String getDurationText() {
+        return (jobDuration / 60) + " hours " + (jobDuration % 60) + " minutes";
     }
 
-    public String toRecord() { 
-        return "Job Id: " + jobID + "\n"
-                + "Job Duration: " + getdurationText() + "\n"
-                + "Job Deadline: " + jobdDeadline + "\n"
+    public String toRecord() {
+        return "Job ID: " + jobID + "\n"
+                + "Job Duration: " + getDurationText() + "\n"
+                + "Job Deadline: " + jobDeadline + "\n"
                 + "Job Status: " + jobStatus + "\n"
                 + "Job Priority: " + priority + "\n"
                 + "Job Waiting Time: " + waitingTime + "\n"
                 + "Job Completion Time: " + completionTime + "\n";
-                
     }
 }
-
-
