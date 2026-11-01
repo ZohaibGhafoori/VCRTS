@@ -364,9 +364,12 @@ public class Main {
                         // Zohaib - Connect Owner and Vehicle classes
                         VehicleOwner owner = new VehicleOwner(ownerID.getText());
 
+                        String selectedType = (String) vehicleType.getSelectedItem();
+
                         Vehicle vehicle = new Vehicle(
                                 "",
                                 vehicleInfo.getText(),
+                                selectedType,
                                 residencyTime.totalMinutes() / 60.0,
                                 "Unknown",
                                 "Unknown"
@@ -375,8 +378,8 @@ public class Main {
                         owner.rentVehicle(vehicle);
 
                         // Check the connection
-                        System.out.println("Owner ID: " + owner.getUserID());
-                        System.out.println("Vehicle: " + owner.getVehicle().getVehicleInfo());
+                        System.out.println("Owner ID: " + vehicle.getOwner().getUserID());
+                        System.out.println("Vehicles: " + owner.getVehicles().size());
 
                         // Owner info
                         writer.write("Owner ID: " + ownerID.getText() + "\n");
