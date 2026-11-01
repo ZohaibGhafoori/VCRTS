@@ -15,6 +15,9 @@ public class Main {
 
         VCController controller = new VCController("VC");
 
+        controller.loadVehicles("owner_transactions.txt");
+        controller.loadJobs("client_transactions.txt");
+
         LoginFrame.open(controller);
     }
 

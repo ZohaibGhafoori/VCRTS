@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -68,6 +71,140 @@ public class VCController {
         client.addJob(job);
         jobList.add(job);
         pendingJobs.add(job);
+    }
+
+    // Read the saved owner file and register each vehicle again
+    public void loadVehicles(String fileName) {
+        File file = new File(fileName);
+
+        if (!file.exists()) {
+            return;
+        }
+
+        try {
+            Scanner input = new Scanner(file);
+
+            String ownerID = "";
+            String vehicleInfo = "";
+            String vehicleType = "Other";
+            int residencyMinutes = 0;
+
+            while (input.hasNextLine()) {
+                String line = input.nextLine();
+
+                if (line.startsWith("Owner ID: ")) {
+                    ownerID = getValue(line);
+                }
+                else if (line.startsWith("Vehicle Information: ")) {
+                    vehicleInfo = getValue(line);
+                }
+                else if (line.startsWith("Vehicle Type: ")) {
+                    vehicleType = getValue(line);
+                }
+                else if (line.startsWith("Residency Time: ")) {
+                    residencyMinutes = toMinutes(getValue(line));
+                }
+                else if (line.startsWith("----")) {
+
+                    // End of one vehicle, so register it
+                    if (!ownerID.equals("") && residencyMinutes > 0) {
+                        Vehicle vehicle = new Vehicle(
+                                "",
+                                vehicleInfo,
+                                vehicleType,
+                                residencyMinutes / 60.0,
+                                "Unknown",
+                                "Unknown"
+                        );
+                        registerVehicle(ownerID, vehicle);
+                    }
+
+                    ownerID = "";
+                    vehicleInfo = "";
+                    vehicleType = "Other";
+                    residencyMinutes = 0;
+                }
+            }
+
+            input.close();
+        } catch (FileNotFoundException ex) {
+            System.out.println("Could not load vehicles: " + ex.getMessage());
+        }
+    }
+
+    // Read the saved client file and add each job again
+    public void loadJobs(String fileName) {
+        File file = new File(fileName);
+
+        if (!file.exists()) {
+            return;
+        }
+
+        try {
+            Scanner input = new Scanner(file);
+
+            String clientID = "";
+            String jobID = "N/A";
+            String jobDeadline = "";
+            int jobDuration = 0;
+            int priority = Job.DEFAULT_PRIORITY;
+
+            while (input.hasNextLine()) {
+                String line = input.nextLine();
+
+                if (line.startsWith("Client ID: ")) {
+                    clientID = getValue(line);
+                }
+                else if (line.startsWith("Job ID: ")) {
+                    jobID = getValue(line);
+                }
+                else if (line.startsWith("Job Duration: ")) {
+                    jobDuration = toMinutes(getValue(line));
+                }
+                else if (line.startsWith("Job Deadline: ")) {
+                    jobDeadline = getValue(line);
+                }
+                else if (line.startsWith("Job Priority: ")) {
+                    priority = Integer.parseInt(getValue(line));
+                }
+                else if (line.startsWith("----")) {
+
+                    // End of one job, so add it
+                    if (!clientID.equals("") && jobDuration > 0) {
+                        Job job = new Job(jobID, jobDuration, jobDeadline, priority);
+                        addJob(clientID, job);
+                    }
+
+                    clientID = "";
+                    jobID = "N/A";
+                    jobDeadline = "";
+                    jobDuration = 0;
+                    priority = Job.DEFAULT_PRIORITY;
+                }
+            }
+
+            input.close();
+        } catch (FileNotFoundException ex) {
+            System.out.println("Could not load jobs: " + ex.getMessage());
+        }
+    }
+
+    // Gets text after the label
+    private String getValue(String line) {
+        int colon = line.indexOf(":");
+        return line.substring(colon + 2);
+    }
+
+    private int toMinutes(String text) {
+        String[] parts = text.split(" ");
+
+        if (parts.length < 4) {
+            return 0;
+        }
+
+        int hours = Integer.parseInt(parts[0]);
+        int minutes = Integer.parseInt(parts[2]);
+        return hours * 60 + minutes;
     }
 
     private VehicleOwner findOwner(String ownerID) {
