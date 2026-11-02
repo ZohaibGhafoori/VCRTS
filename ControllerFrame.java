@@ -77,7 +77,7 @@ public class ControllerFrame {
 
         panel.add(Box.createVerticalStrut(5));
 
-        JButton deleteButton = new JButton("Delete Selected Job");
+        JButton deleteButton = new JButton("Delete Job");
         panel.add(deleteButton);
 
         for (java.awt.Component c : panel.getComponents()) {

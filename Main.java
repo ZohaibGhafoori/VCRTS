@@ -98,7 +98,7 @@ public class Main {
         JTextField[] ownerFields = {ownerID, licensePlate, vehicleModel};
 
         // Zohaib - Owner fields
-        JLabel ownerIDLabel = new JLabel("Owner ID:");
+        JLabel ownerIDLabel = new JLabel("Owner ID (e.g. 12345):");
         panel.add(ownerIDLabel);
         panel.add(ownerID);
 
@@ -141,7 +141,7 @@ public class Main {
         panel.add(clientNote);
 
         // Felix - Client fields
-        JLabel clientIDLabel = new JLabel("Client ID:");
+        JLabel clientIDLabel = new JLabel("Client ID (e.g. 12345):");
         panel.add(clientIDLabel);
         panel.add(clientID);
 
@@ -317,6 +317,26 @@ public class Main {
                         }
                     }
 
+                    // Owner ID can only have numbers
+                    String ownerIDText = ownerID.getText().trim();
+
+                    for (int i = 0; i < ownerIDText.length(); i++) {
+
+                        if (!Character.isDigit(ownerIDText.charAt(i))) {
+
+                            JOptionPane.showMessageDialog(
+                                    frame,
+                                    "Owner ID must be a number",
+                                    "Save Error",
+                                    JOptionPane.ERROR_MESSAGE
+                            );
+
+                            return;
+                        }
+                    }
+
+                    ownerID.setText(ownerIDText);
+
                     // License plate checks
                     String plate = licensePlate.getText().trim().toUpperCase();
 
@@ -397,6 +417,26 @@ public class Main {
                             return;
                         }
                     }
+
+                    // Client ID can only have numbers
+                    String clientIDText = clientID.getText().trim();
+
+                    for (int i = 0; i < clientIDText.length(); i++) {
+
+                        if (!Character.isDigit(clientIDText.charAt(i))) {
+
+                            JOptionPane.showMessageDialog(
+                                    frame,
+                                    "Client ID must be a number",
+                                    "Save Error",
+                                    JOptionPane.ERROR_MESSAGE
+                            );
+
+                            return;
+                        }
+                    }
+
+                    clientID.setText(clientIDText);
 
                     // Job duration must be longer than 0
                     if (jobDuration.totalMinutes() <= 0) {
