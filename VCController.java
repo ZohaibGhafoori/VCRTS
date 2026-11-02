@@ -1,5 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -186,6 +188,7 @@ public class VCController {
         try {
             Scanner input = new Scanner(file);
 
+            String time = "";
             String clientID = "";
             String jobID = "N/A";
             String jobDeadline = "";
@@ -195,7 +198,10 @@ public class VCController {
             while (input.hasNextLine()) {
                 String line = input.nextLine();
 
-                if (line.startsWith("Client ID: ")) {
+                if (line.startsWith("Time: ")) {
+                    time = getValue(line);
+                }
+                else if (line.startsWith("Client ID: ")) {
                     clientID = getValue(line);
                 }
                 else if (line.startsWith("Job ID: ")) {
@@ -215,9 +221,11 @@ public class VCController {
                     // End of one job, so add it
                     if (!clientID.equals("") && jobDuration > 0) {
                         Job job = new Job(jobID, jobDuration, jobDeadline, priority);
+                        job.setSubmitTime(time);
                         addJob(clientID, job);
                     }
 
+                    time = "";
                     clientID = "";
                     jobID = "N/A";
                     jobDeadline = "";
@@ -230,6 +238,50 @@ public class VCController {
         } catch (FileNotFoundException ex) {
             System.out.println("Could not load jobs: " + ex.getMessage());
         }
+    }
+
+    // Removes a job everywhere and saves the client file without it
+    public void deleteJob(Job job) {
+        jobList.remove(job);
+        pendingJobs.remove(job);
+        job.getClient().removeJob(job);
+
+        saveJobs("client_transactions.txt");
+    }
+
+    // Writes all the jobs back to the file
+    public void saveJobs(String fileName) {
+        try {
+            FileWriter writer = new FileWriter(fileName, false);
+
+            for (int i = 0; i < jobList.size(); i++) {
+                Job job = jobList.get(i);
+
+                writer.write("Time: " + job.getSubmitTime() + "\n");
+                writer.write("User Type: Client\n");
+                writer.write("Client ID: " + job.getClient().getUserID() + "\n");
+                writer.write("Job ID: " + job.getJobID() + "\n");
+                writer.write("Job Duration: " + job.getDurationText() + "\n");
+                writer.write("Job Deadline: " + job.getJobDeadline() + "\n");
+                writer.write("Job Priority: " + job.getPriority() + "\n");
+                writer.write("----------------------\n");
+            }
+
+            writer.close();
+        } catch (IOException ex) {
+            System.out.println("Could not save jobs: " + ex.getMessage());
+        }
+    }
+
+    public void reloadData() {
+        owners.clear();
+        clients.clear();
+        vehicles.clear();
+        jobList.clear();
+        pendingJobs.clear();
+
+        loadVehicles("owner_transactions.txt");
+        loadJobs("client_transactions.txt");
     }
 
     // Gets text after the label

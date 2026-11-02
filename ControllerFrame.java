@@ -75,6 +75,11 @@ public class ControllerFrame {
         JButton calculateButton = new JButton("Calculate Completion Time");
         panel.add(calculateButton);
 
+        panel.add(Box.createVerticalStrut(5));
+
+        JButton deleteButton = new JButton("Delete Selected Job");
+        panel.add(deleteButton);
+
         for (java.awt.Component c : panel.getComponents()) {
             JComponent comp = (JComponent) c;
             comp.setAlignmentX(JComponent.LEFT_ALIGNMENT);
@@ -97,6 +102,10 @@ public class ControllerFrame {
 
         calculateButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+
+                controller.reloadData();
+                vehiclesLabel.setText("Vehicles: " + controller.getVehicles().size());
+                pendingLabel.setText("Pending Jobs: " + controller.getPendingJobs().size());
 
                 List<Job> schedule = controller.calculateCompletionTimes();
                 //System.out.println("jobs scheduled: " + schedule.size());
@@ -131,6 +140,43 @@ public class ControllerFrame {
                 String avg = String.format("%.2f", average);
 
                 averageLabel.setText("Average Waiting Time: " + avg + " minutes");
+            }
+        });
+
+        deleteButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                int row = jobTable.getSelectedRow();
+
+                if (row == -1) {
+                    JOptionPane.showMessageDialog(frame, "Select a job in the table first.");
+                    return;
+                }
+
+                // The table is in the same order as the schedule
+                List<Job> schedule = controller.calculateCompletionTimes();
+                Job job = schedule.get(row);
+
+                int choice = JOptionPane.showConfirmDialog(
+                        frame,
+                        "Delete job " + job.getJobID() + " for " + job.getClient().getUserID() + "?",
+                        "Delete Job",
+                        JOptionPane.YES_NO_OPTION
+                );
+
+                if (choice != JOptionPane.YES_OPTION) {
+                    return;
+                }
+
+                controller.deleteJob(job);
+
+                tableModel.setRowCount(0);
+                averageLabel.setText("Average Waiting Time:");
+                pendingLabel.setText("Pending Jobs: " + controller.getPendingJobs().size());
+
+                if (controller.getJobList().size() > 0) {
+                    calculateButton.doClick();
+                }
             }
         });
 

@@ -358,8 +358,8 @@ public class Main {
                     System.out.println("Saving to: " + new java.io.File(fileName).getAbsolutePath());
                     FileWriter writer = new FileWriter(fileName, true);
 
-                    writer.write("Time: " + LocalDateTime.now().format(
-                            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "\n");
+                    String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                    writer.write("Time: " + time + "\n");
 
                     writer.write("User Type: " + userType.getSelectedItem() + "\n");
 
@@ -426,6 +426,7 @@ public class Main {
                                 jobDeadline.getText(),
                                 priority
                         );
+                        job.setSubmitTime(time);
 
                         controller.addJob(clientID.getText(), job);
 

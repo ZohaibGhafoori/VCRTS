@@ -25,6 +25,10 @@ public class Client extends User {
         job.setClient(this);
     }
 
+    public void removeJob(Job job) {
+        jobList.remove(job);
+    }
+
     public ArrayList<Job> getJobList() {
         return jobList;
     }
