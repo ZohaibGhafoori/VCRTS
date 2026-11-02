@@ -3,12 +3,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
+//represents a job a client submits, this stores the jobs details such as its priority
 public class Job {
 
+//lower number means higher priority 
     public static final int HIGHEST_PRIORITY = 1;
     public static final int LOWEST_PRIORITY = 10;
     public static final int DEFAULT_PRIORITY = 5;
 
+    //Job attributes
     private String jobID;
     private String submitTime;
     private Client client;
@@ -20,6 +23,8 @@ public class Job {
     private int waitingTime;
     private int completionTime;
 
+
+    //creates a new job 
     public Job(String jobID, int jobDuration, String jobDeadline, int priority) {
         this.jobID = jobID;
         this.jobDuration = jobDuration;
