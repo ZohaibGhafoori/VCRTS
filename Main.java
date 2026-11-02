@@ -81,20 +81,25 @@ public class Main {
         panel.add(ownerNote);
 
         JTextField ownerID = new JTextField();
+        JTextField licensePlate = new JTextField();
         JTextField vehicleInfo = new JTextField();
 
         // Zohaib - Vehicle type dropdown
-        String[] vehicleTypes = {"Sedan", "SUV", "Coupe", "Motorcycle", "Other"};
+        String[] vehicleTypes = {"Electric", "Hybrid", "Gas"};
         JComboBox<String> vehicleType = new JComboBox<String>(vehicleTypes);
         DurationInput residencyTime = new DurationInput();
-        JTextField[] ownerFields = {ownerID, vehicleInfo};
+        JTextField[] ownerFields = {ownerID, licensePlate, vehicleInfo};
 
         // Zohaib - Owner fields
         JLabel ownerIDLabel = new JLabel("Owner ID:");
         panel.add(ownerIDLabel);
         panel.add(ownerID);
 
-        JLabel vehicleInfoLabel = new JLabel("Vehicle Information:");
+        JLabel licensePlateLabel = new JLabel("License Plate:");
+        panel.add(licensePlateLabel);
+        panel.add(licensePlate);
+
+        JLabel vehicleInfoLabel = new JLabel("Vehicle Model:");
         panel.add(vehicleInfoLabel);
         panel.add(vehicleInfo);
 
@@ -112,6 +117,7 @@ public class Main {
         JComponent[] ownerSection = {
                 ownerNote,
                 ownerIDLabel, ownerID,
+                licensePlateLabel, licensePlate,
                 vehicleInfoLabel, vehicleInfo,
                 vehicleTypeLabel, vehicleType,
                 residencyTimeLabel, residencyTime
@@ -268,6 +274,54 @@ public class Main {
                         }
                     }
 
+                    // License plate checks
+                    String plate = licensePlate.getText().trim().toUpperCase();
+
+                    if (plate.length() < 2 || plate.length() > 8) {
+
+                        JOptionPane.showMessageDialog(
+                                frame,
+                                "License plate must be 2 to 8 characters",
+                                "Save Error",
+                                JOptionPane.ERROR_MESSAGE
+                        );
+
+                        return;
+                    }
+
+                    for (int i = 0; i < plate.length(); i++) {
+                        char ch = plate.charAt(i);
+
+                        if (!Character.isLetterOrDigit(ch) && ch != ' ' && ch != '-') {
+
+                            JOptionPane.showMessageDialog(
+                                    frame,
+                                    "License plate can only have letters, numbers, spaces and dashes",
+                                    "Save Error",
+                                    JOptionPane.ERROR_MESSAGE
+                            );
+
+                            return;
+                        }
+                    }
+
+                    for (int i = 0; i < controller.getVehicles().size(); i++) {
+
+                        if (controller.getVehicles().get(i).getVehicleID().equalsIgnoreCase(plate)) {
+
+                            JOptionPane.showMessageDialog(
+                                    frame,
+                                    "A vehicle with this license plate is already registered",
+                                    "Save Error",
+                                    JOptionPane.ERROR_MESSAGE
+                            );
+
+                            return;
+                        }
+                    }
+
+                    licensePlate.setText(plate);
+
                     // Residency time must be longer than 0
                     if (residencyTime.totalMinutes() <= 0) {
 
@@ -370,7 +424,7 @@ public class Main {
                         String selectedType = (String) vehicleType.getSelectedItem();
 
                         Vehicle vehicle = new Vehicle(
-                                "",
+                                licensePlate.getText(),
                                 vehicleInfo.getText(),
                                 selectedType,
                                 residencyTime.totalMinutes() / 60.0,
@@ -386,7 +440,8 @@ public class Main {
 
                         // Owner info
                         writer.write("Owner ID: " + ownerID.getText() + "\n");
-                        writer.write("Vehicle Information: " + vehicleInfo.getText() + "\n");
+                        writer.write("License Plate: " + licensePlate.getText() + "\n");
+                        writer.write("Vehicle Model: " + vehicleInfo.getText() + "\n");
 
                         // Zohaib - Save selected vehicle type
                         writer.write("Vehicle Type: " + vehicleType.getSelectedItem() + "\n");
