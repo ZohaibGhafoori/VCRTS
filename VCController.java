@@ -131,7 +131,7 @@ public class VCController {
 
             String ownerID = "";
             String licensePlate = "";
-            String vehicleInfo = "";
+            String vehicleModel = "";
             String vehicleType = "Other";
             int residencyMinutes = 0;
 
@@ -144,8 +144,8 @@ public class VCController {
                 else if (line.startsWith("License Plate: ")) {
                     licensePlate = getValue(line);
                 }
-                else if (line.startsWith("Vehicle Information: ")) {
-                    vehicleInfo = getValue(line);
+                else if (line.startsWith("Vehicle Model: ")) {
+                    vehicleModel = getValue(line);
                 }
                 else if (line.startsWith("Vehicle Type: ")) {
                     vehicleType = getValue(line);
@@ -159,7 +159,7 @@ public class VCController {
                     if (!ownerID.equals("") && residencyMinutes > 0) {
                         Vehicle vehicle = new Vehicle(
                                 licensePlate,
-                                vehicleInfo,
+                                vehicleModel,
                                 vehicleType,
                                 residencyMinutes / 60.0,
                                 "Unknown",
@@ -170,7 +170,7 @@ public class VCController {
 
                     ownerID = "";
                     licensePlate = "";
-                    vehicleInfo = "";
+                    vehicleModel = "";
                     vehicleType = "Other";
                     residencyMinutes = 0;
                 }

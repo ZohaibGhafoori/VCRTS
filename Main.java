@@ -89,13 +89,13 @@ public class Main {
 
         JTextField ownerID = new JTextField();
         JTextField licensePlate = new JTextField();
-        JTextField vehicleInfo = new JTextField();
+        JTextField vehicleModel = new JTextField();
 
         // Zohaib - Vehicle type dropdown
         String[] vehicleTypes = {"Electric", "Hybrid", "Gas"};
         JComboBox<String> vehicleType = new JComboBox<String>(vehicleTypes);
         DurationInput residencyTime = new DurationInput();
-        JTextField[] ownerFields = {ownerID, licensePlate, vehicleInfo};
+        JTextField[] ownerFields = {ownerID, licensePlate, vehicleModel};
 
         // Zohaib - Owner fields
         JLabel ownerIDLabel = new JLabel("Owner ID:");
@@ -106,9 +106,9 @@ public class Main {
         panel.add(licensePlateLabel);
         panel.add(licensePlate);
 
-        JLabel vehicleInfoLabel = new JLabel("Vehicle Model:");
-        panel.add(vehicleInfoLabel);
-        panel.add(vehicleInfo);
+        JLabel vehicleModelLabel = new JLabel("Vehicle Model:");
+        panel.add(vehicleModelLabel);
+        panel.add(vehicleModel);
 
         // Zohaib - Show vehicle type dropdown
         JLabel vehicleTypeLabel = new JLabel("Vehicle Type:");
@@ -125,7 +125,7 @@ public class Main {
                 ownerNote,
                 ownerIDLabel, ownerID,
                 licensePlateLabel, licensePlate,
-                vehicleInfoLabel, vehicleInfo,
+                vehicleModelLabel, vehicleModel,
                 vehicleTypeLabel, vehicleType,
                 residencyTimeLabel, residencyTime
         };
@@ -469,7 +469,7 @@ public class Main {
 
                         Vehicle vehicle = new Vehicle(
                                 licensePlate.getText(),
-                                vehicleInfo.getText(),
+                                vehicleModel.getText(),
                                 selectedType,
                                 residencyTime.totalMinutes() / 60.0,
                                 "Unknown",
@@ -485,7 +485,7 @@ public class Main {
                         // Owner info
                         writer.write("Owner ID: " + ownerID.getText() + "\n");
                         writer.write("License Plate: " + licensePlate.getText() + "\n");
-                        writer.write("Vehicle Model: " + vehicleInfo.getText() + "\n");
+                        writer.write("Vehicle Model: " + vehicleModel.getText() + "\n");
 
                         // Zohaib - Save selected vehicle type
                         writer.write("Vehicle Type: " + vehicleType.getSelectedItem() + "\n");

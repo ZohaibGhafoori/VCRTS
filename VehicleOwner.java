@@ -27,13 +27,13 @@ public class VehicleOwner extends User {
         return vehicles;
     }
 
-    // Update the information of one of the owner's vehicles
-    public void updateVehicleInfo(String vehicleID, String newInfo) {
+    // Update the model of one of the owner's vehicles
+    public void updateVehicleModel(String vehicleID, String newModel) {
         for (int i = 0; i < vehicles.size(); i++) {
             Vehicle vehicle = vehicles.get(i);
 
             if (vehicle.getVehicleID().equals(vehicleID)) {
-                vehicle.setVehicleInfo(newInfo);
+                vehicle.setVehicleModel(newModel);
             }
         }
     }
