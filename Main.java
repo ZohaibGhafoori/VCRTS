@@ -13,6 +13,13 @@ public class Main {
 
     public static void main(String[] args) {
 
+        // FlatLaf library for GUI sleek design
+        try {
+            UIManager.setLookAndFeel("com.formdev.flatlaf.FlatLightLaf");
+        } catch (Exception ex) {
+            System.out.println("FlatLaf not found");
+        }
+
         VCController controller = new VCController("VC");
 
         controller.loadVehicles("owner_transactions.txt");
