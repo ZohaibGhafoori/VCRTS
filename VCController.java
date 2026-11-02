@@ -130,6 +130,7 @@ public class VCController {
             Scanner input = new Scanner(file);
 
             String ownerID = "";
+            String licensePlate = "";
             String vehicleInfo = "";
             String vehicleType = "Other";
             int residencyMinutes = 0;
@@ -139,6 +140,9 @@ public class VCController {
 
                 if (line.startsWith("Owner ID: ")) {
                     ownerID = getValue(line);
+                }
+                else if (line.startsWith("License Plate: ")) {
+                    licensePlate = getValue(line);
                 }
                 else if (line.startsWith("Vehicle Information: ")) {
                     vehicleInfo = getValue(line);
@@ -154,7 +158,7 @@ public class VCController {
                     // End of one vehicle, so register it
                     if (!ownerID.equals("") && residencyMinutes > 0) {
                         Vehicle vehicle = new Vehicle(
-                                "",
+                                licensePlate,
                                 vehicleInfo,
                                 vehicleType,
                                 residencyMinutes / 60.0,
@@ -165,6 +169,7 @@ public class VCController {
                     }
 
                     ownerID = "";
+                    licensePlate = "";
                     vehicleInfo = "";
                     vehicleType = "Other";
                     residencyMinutes = 0;
