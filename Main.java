@@ -32,8 +32,8 @@ public class Main {
 
 
         JFrame frame = new JFrame("VCRTS");
-        frame.setSize(480, 640);
-        frame.setMinimumSize(new java.awt.Dimension(400, 540));
+        frame.setSize(460, 500);
+        frame.setMinimumSize(new java.awt.Dimension(400, 500));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel panel = new JPanel();
@@ -199,7 +199,7 @@ public class Main {
 
             if (comp instanceof JLabel) {
                 comp.setBorder(
-                        BorderFactory.createEmptyBorder(5, 0, 1, 0)
+                        BorderFactory.createEmptyBorder(8, 0, 3, 0)
                 );
             }
         }
