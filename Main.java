@@ -135,8 +135,7 @@ public class Main {
 
         JTextField clientID = new JTextField();
         DurationInput jobDuration = new DurationInput();
-        JTextField jobDeadline = new JTextField();
-        JTextField[] clientFields = {clientID, jobDeadline};
+        JTextField[] clientFields = {clientID};
 
         JLabel clientNote = new JLabel("Enter client information below.");
         panel.add(clientNote);
@@ -150,9 +149,46 @@ public class Main {
         panel.add(jobDurationLabel);
         panel.add(jobDuration);
 
-        JLabel jobDeadlineLabel = new JLabel("Job Deadline (yyyy-MM-dd):");
+        JLabel jobDeadlineLabel = new JLabel("Job Deadline:");
         panel.add(jobDeadlineLabel);
-        panel.add(jobDeadline);
+
+        // Dropdown month options
+        String[] months = {"January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"};
+
+        String[] days = new String[31];
+        for (int i = 0; i < 31; i++) {
+            days[i] = "" + (i + 1);
+        }
+
+        String[] years = new String[3];
+        int thisYear = LocalDate.now().getYear();
+        for (int i = 0; i < 3; i++) {
+            years[i] = "" + (thisYear + i);
+        }
+
+        JComboBox<String> deadlineMonth = new JComboBox<String>(months);
+        JComboBox<String> deadlineDay = new JComboBox<String>(days);
+        JComboBox<String> deadlineYear = new JComboBox<String>(years);
+
+        // Today's date
+        deadlineMonth.setSelectedIndex(LocalDate.now().getMonthValue() - 1);
+        deadlineDay.setSelectedIndex(LocalDate.now().getDayOfMonth() - 1);
+        deadlineYear.setSelectedIndex(0);
+
+        JPanel deadlineRow = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 0, 0));
+        deadlineRow.add(deadlineMonth);
+        deadlineRow.add(new JLabel("  "));
+        deadlineRow.add(deadlineDay);
+        deadlineRow.add(new JLabel("  "));
+        deadlineRow.add(deadlineYear);
+        deadlineRow.setMaximumSize(
+                new java.awt.Dimension(
+                        Integer.MAX_VALUE,
+                        deadlineRow.getPreferredSize().height
+                )
+        );
+        panel.add(deadlineRow);
 
         // Job priority
         JLabel jobPriorityLabel = new JLabel("Job Priority:");
@@ -178,7 +214,7 @@ public class Main {
                 clientNote,
                 clientIDLabel, clientID,
                 jobDurationLabel, jobDuration,
-                jobDeadlineLabel, jobDeadline,
+                jobDeadlineLabel, deadlineRow,
                 jobPriorityLabel, jobPriorityRow
         };
 
@@ -376,10 +412,11 @@ public class Main {
                     }
 
                     // Job deadline must be a date that hasn't passed
+                    String deadline = getDeadline(deadlineMonth, deadlineDay, deadlineYear);
+
                     try {
 
-                        if (LocalDate.parse(jobDeadline.getText().trim())
-                                .isBefore(LocalDate.now())) {
+                        if (LocalDate.parse(deadline).isBefore(LocalDate.now())) {
 
                             JOptionPane.showMessageDialog(
                                     frame,
@@ -477,7 +514,7 @@ public class Main {
                         writer.write("Job ID: " + jobID + "\n");
         
                         writer.write("Job Duration: " + jobDuration.describe() + "\n");
-                        writer.write("Job Deadline: " + jobDeadline.getText() + "\n");
+                        writer.write("Job Deadline: " + getDeadline(deadlineMonth, deadlineDay, deadlineYear) + "\n");
                         writer.write("Job Priority: " + jobPriority.getValue() + "\n");
 
                         int priority = Integer.parseInt(jobPriority.getValue().toString());
@@ -485,7 +522,7 @@ public class Main {
                         Job job = new Job(
                                 jobID,
                                 jobDuration.totalMinutes(),
-                                jobDeadline.getText(),
+                                getDeadline(deadlineMonth, deadlineDay, deadlineYear),
                                 priority
                         );
                         job.setSubmitTime(time);
@@ -496,6 +533,9 @@ public class Main {
                             field.setText("");
                         }
                         jobDuration.clear();
+                        deadlineMonth.setSelectedIndex(LocalDate.now().getMonthValue() - 1);
+                        deadlineDay.setSelectedIndex(LocalDate.now().getDayOfMonth() - 1);
+                        deadlineYear.setSelectedIndex(0);
                         jobPriority.setValue(Job.DEFAULT_PRIORITY);
                     }
 
@@ -547,6 +587,9 @@ public class Main {
                 }
 
                 (owner ? residencyTime : jobDuration).clear();
+                deadlineMonth.setSelectedIndex(LocalDate.now().getMonthValue() - 1);
+                deadlineDay.setSelectedIndex(LocalDate.now().getDayOfMonth() - 1);
+                deadlineYear.setSelectedIndex(0);
                 jobPriority.setValue(Job.DEFAULT_PRIORITY);
             }
         });
@@ -576,7 +619,24 @@ public class Main {
 
 
 
-    // Ben - Separate hours and minutes boxes, so users don't have to type 8.5 for 8h 30m
+    // Converts dropdown entries into dates
+    static String getDeadline(JComboBox<String> month, JComboBox<String> day, JComboBox<String> year) {
+        String m = "" + (month.getSelectedIndex() + 1);
+        String d = day.getSelectedItem().toString();
+
+        if (m.length() == 1) {
+            m = "0" + m;
+        }
+
+        if (d.length() == 1) {
+            d = "0" + d;
+        }
+
+        return year.getSelectedItem() + "-" + m + "-" + d;
+    }
+
+
+    // Ben - Separate hours and minutes boxes
     static class DurationInput extends JPanel {
 
         private final JSpinner hours = new JSpinner(new SpinnerNumberModel(0, 0, 999, 1));
