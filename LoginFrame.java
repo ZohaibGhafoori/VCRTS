@@ -1,3 +1,9 @@
+/* Project: VCRTS
+ * Class: LoginFrame.java
+ * Author: Ben, Zohaib, Joanna, Felix
+ * Date: November 1, 2026
+ * The login window.
+ */
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileWriter;
@@ -31,6 +37,9 @@ public class LoginFrame {
                 ? new JLabel(new ImageIcon(logoFile))
                 : new JLabel("Vehicular Cloud Real Time System");
         panel.add(title);
+
+        JLabel description = new JLabel("Parked cars used as computers in a vehicular cloud.");
+        panel.add(description);
 
         JLabel note = new JLabel("Log in or create a new account for the selected role.");
         panel.add(note);

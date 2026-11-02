@@ -1,3 +1,9 @@
+/* Project: VCRTS
+ * Class: VehicleOwner.java
+ * Author: Ben, Zohaib, Joanna, Felix
+ * Date: November 1, 2026
+ * An owner who rents out vehicles.
+ */
 import java.util.ArrayList;
 
 public class VehicleOwner extends User {

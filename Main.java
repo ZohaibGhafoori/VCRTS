@@ -1,3 +1,9 @@
+/* Project: VCRTS
+ * Class: Main.java
+ * Author: Ben, Zohaib, Joanna, Felix
+ * Date: November 1, 2026
+ * Starts the program and shows the owner and client form.
+ */
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,8 +38,8 @@ public class Main {
 
 
         JFrame frame = new JFrame("VCRTS");
-        frame.setSize(460, 500);
-        frame.setMinimumSize(new java.awt.Dimension(400, 500));
+        frame.setSize(460, 530);
+        frame.setMinimumSize(new java.awt.Dimension(400, 530));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel panel = new JPanel();
@@ -73,6 +79,9 @@ public class Main {
                 )
         );
         panel.add(topRow);
+
+        JLabel description = new JLabel("Owners rent out their parked cars. Clients submit jobs.");
+        panel.add(description);
 
         JLabel userTypeLabel = new JLabel("Select User Type:");
         panel.add(userTypeLabel);
