@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-
+//represents a client who submits a job to the system, a client can have many jobs 
 public class Client extends User {
 
     // A client can submit any number of jobs
@@ -38,7 +38,7 @@ public class Client extends User {
     public ArrayList<Job> getJobList() {
         return jobList;
     }
-
+//allows a client to track the status of their job by its unique job ID
     public String trackJob(String jobId) {
         for (Job job : jobList) {
             if (job.getJobID().equals(jobId)) { 
@@ -49,7 +49,7 @@ public class Client extends User {
         return "Job not found.";
 
     }
-
+//saves the job to a text file, shows the time stamp, date, and client ID
     public void saveToFile(String fileName) throws IOException {
 
     FileWriter writer = new FileWriter(fileName, true);
