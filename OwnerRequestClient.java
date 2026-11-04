@@ -1,10 +1,10 @@
+
 import java.io.*;
 import java.net.*;
 import javax.swing.*;
 
 public class OwnerRequestClient {
 
-    // Zohaib - Send Owner information to server
     public static void sendRequest(
             String ownerID,
             String plate,
@@ -12,6 +12,16 @@ public class OwnerRequestClient {
             String type,
             double time) {
 
-        System.out.println("Starting Owner request");
+        try {
+            // Zohaib - Connect to VC Controller
+            Socket socket = new Socket("localhost", 5000);
+
+            System.out.println("Connected to VC Controller");
+
+            socket.close();
+
+        } catch (Exception e) {
+            System.out.println("Could not connect to server");
+        }
     }
 }
