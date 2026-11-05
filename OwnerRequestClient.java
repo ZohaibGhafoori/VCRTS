@@ -13,15 +13,25 @@ public class OwnerRequestClient {
             double time) {
 
         try {
-            // Zohaib - Connect to VC Controller
             Socket socket = new Socket("localhost", 5000);
 
-            System.out.println("Connected to VC Controller");
+            // Send information to server
+            PrintWriter out = new PrintWriter(
+                    socket.getOutputStream(), true);
+
+            out.println("OWNER");
+            out.println(ownerID);
+            out.println(plate);
+            out.println(model);
+            out.println(type);
+            out.println(time);
+
+            System.out.println("Owner information sent");
 
             socket.close();
 
         } catch (Exception e) {
-            System.out.println("Could not connect to server");
+            System.out.println("Could not send Owner information");
         }
     }
 }
