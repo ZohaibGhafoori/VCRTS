@@ -1,3 +1,9 @@
+/* Project: VCRTS
+ * Class: Job.java
+ * Author: Ben, Zohaib, Joanna, Felix
+ * Date: November 1, 2026
+ * A job submitted by a client.
+ */
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;

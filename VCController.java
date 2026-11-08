@@ -1,3 +1,9 @@
+/* Project: VCRTS
+ * Class: VCController.java
+ * Author: Ben, Zohaib, Joanna, Felix
+ * Date: November 1, 2026
+ * Keeps track of vehicles and jobs and schedules the jobs.
+ */
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;

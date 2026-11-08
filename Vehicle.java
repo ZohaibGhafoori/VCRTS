@@ -1,3 +1,9 @@
+/* Project: VCRTS
+ * Class: Vehicle.java
+ * Author: Ben, Zohaib, Joanna, Felix
+ * Date: November 1, 2026
+ * A vehicle rented out by an owner.
+ */
 public class Vehicle {
 
     // Vehicle information

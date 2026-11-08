@@ -1,3 +1,9 @@
+/* Project: VCRTS
+ * Class: Client.java
+ * Author: Ben, Zohaib, Joanna, Felix
+ * Date: November 1, 2026
+ * A client who submits jobs.
+ */
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
