@@ -1,3 +1,4 @@
+
 /* Project: VCRTS
  * Class: Main.java
  * Author: Ben, Zohaib, Joanna, Felix
@@ -491,17 +492,31 @@ public class Main {
                 }
 
 
+                // Zohaib - Milestone 5 Owner connection
+                if (userType.getSelectedItem().equals("Owner")) {
+
+                    OwnerSubmission.send(
+                            ownerID.getText(),
+                            licensePlate.getText(),
+                            vehicleModel.getText(),
+                            (String) vehicleType.getSelectedItem(),
+                            residencyTime.totalMinutes() / 60.0
+                    );
+
+                    return;
+                }
+
                 try {
 
-                    // Zohaib - Client info goes into this folder 
+                    // Zohaib - Client info goes into this folder
                     String fileName = "client_transactions.txt";
-                    
+
                     // Zohaib - Owner info goes into this folder
                     if (userType.getSelectedItem().equals("Owner")) {
                         fileName = "owner_transactions.txt";
                     }
 
-                    // Open's the file 
+                    // Open's the file
                     System.out.println("Saving to: " + new java.io.File(fileName).getAbsolutePath());
                     FileWriter writer = new FileWriter(fileName, true);
 
@@ -561,7 +576,7 @@ public class Main {
                         writer.write("Client ID: " + clientID.getText() + "\n");
                         String jobID = Job.generateJobID();
                         writer.write("Job ID: " + jobID + "\n");
-        
+
                         writer.write("Job Duration: " + jobDuration.describe() + "\n");
                         writer.write("Job Deadline: " + getDeadline(deadlineMonth, deadlineDay, deadlineYear) + "\n");
                         writer.write("Job Priority: " + jobPriority.getValue() + "\n");
@@ -645,7 +660,7 @@ public class Main {
 
         // Ben - Center Save and Clear buttons
         JPanel buttonRow = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 0));
-        
+
         buttonRow.add(saveButton);
         buttonRow.add(clearButton);
 
