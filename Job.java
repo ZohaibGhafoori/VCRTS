@@ -10,6 +10,7 @@ public class Job {
     public static final int DEFAULT_PRIORITY = 5;
 
     private String jobID;
+    private String submitTime;
     private Client client;
     private int jobDuration;
     private String jobDeadline;
@@ -58,6 +59,14 @@ public class Job {
 
     public String getJobID() {
         return jobID;
+    }
+
+    public String getSubmitTime() {
+        return submitTime;
+    }
+
+    public void setSubmitTime(String submitTime) {
+        this.submitTime = submitTime;
     }
 
     public Client getClient() {

@@ -49,7 +49,6 @@ public class ControllerFrame {
         );
         panel.add(topRow);
 
-
         panel.add(Box.createVerticalStrut(5));
 
         // Overview of what the controller is managing
