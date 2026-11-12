@@ -1,4 +1,3 @@
-
 import java.io.*;
 import java.net.*;
 import javax.swing.*;
@@ -13,12 +12,15 @@ public class OwnerRequestClient {
             double time) {
 
         try {
-            Socket socket = new Socket("localhost", 5000);
+            Socket socket = new Socket("localhost", VCServer.PORT);
 
-            // Send information to server
             PrintWriter out = new PrintWriter(
                     socket.getOutputStream(), true);
 
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(socket.getInputStream()));
+
+            // Send Owner information
             out.println("OWNER");
             out.println(ownerID);
             out.println(plate);
@@ -26,12 +28,46 @@ public class OwnerRequestClient {
             out.println(type);
             out.println(time);
 
-            System.out.println("Owner information sent");
+            // Check if server received request
+            String message = in.readLine();
+
+            if ("RECEIVED".equals(message)) {
+                SwingUtilities.invokeLater(() ->
+                    JOptionPane.showMessageDialog(
+                            null, "Server received your request"
+                    )
+                );
+            } else {
+                throw new IOException("No acknowledgment");
+            }
+
+            // Get controller decision
+            String result = in.readLine();
+
+            if ("ACCEPTED".equals(result)) {
+                SwingUtilities.invokeLater(() ->
+                    JOptionPane.showMessageDialog(
+                            null, "Vehicle registration accepted"
+                    )
+                );
+            } else if ("REJECTED".equals(result)) {
+                SwingUtilities.invokeLater(() ->
+                    JOptionPane.showMessageDialog(
+                            null, "Vehicle registration rejected"
+                    )
+                );
+            } else {
+                throw new IOException("No decision received");
+            }
 
             socket.close();
 
         } catch (Exception e) {
-            System.out.println("Could not send Owner information");
+            SwingUtilities.invokeLater(() ->
+                JOptionPane.showMessageDialog(
+                        null, "Request failed: " + e.getMessage()
+                )
+            );
         }
     }
 }

@@ -18,6 +18,11 @@ public class ControllerFrame {
 
     public static void open(VCController controller, String username) {
 
+        // Start the server so owners and clients can send requests
+        VCServer server = new VCServer();
+        Thread serverThread = new Thread(server);
+        serverThread.start();
+
         JFrame frame = new JFrame("VCRTS · Controller Panel");
         frame.setSize(810, 580);
         frame.setMinimumSize(new java.awt.Dimension(620, 480));
