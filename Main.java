@@ -363,29 +363,34 @@ public class Main {
 
                 // --- CONNECTING TO SERVER ---
                 try {
+                    String response = "";
+                    
                     if (userType.getSelectedItem().equals("Owner")) {
                         String selectedType = (String) vehicleType.getSelectedItem();
                         
-                        // Send to Server!
-                        OwnerRequestClient.sendRequest(
-                            ownerID.getText(),
-                            licensePlate.getText(),
-                            vehicleModel.getText(),
-                            selectedType,
-                            residencyTime.totalMinutes() / 60.0
-                        );
+                        try (java.net.Socket socket = new java.net.Socket("localhost", 5000);
+                             java.io.PrintWriter out = new java.io.PrintWriter(socket.getOutputStream(), true);
+                             java.io.BufferedReader in = new java.io.BufferedReader(new java.io.InputStreamReader(socket.getInputStream()))) {
+                             
+                            out.println("OWNER");
+                            out.println(ownerID.getText());
+                            out.println(licensePlate.getText());
+                            out.println(vehicleModel.getText());
+                            out.println(selectedType);
+                            out.println(residencyTime.totalMinutes() / 60.0);
+                            
+                            response = in.readLine();
+                        }
 
-                        // Clear fields
                         for (JTextField field : ownerFields) field.setText("");
                         residencyTime.clear();
                         
                     } else if (userType.getSelectedItem().equals("Client")) {
-                        // Force the JSpinner to save whatever is currently typed
                         try { jobPriority.commitEdit(); } catch (Exception ex) {}
 
-                        // Connect to server
                         try (java.net.Socket socket = new java.net.Socket("localhost", 5000);
-                             java.io.PrintWriter out = new java.io.PrintWriter(socket.getOutputStream(), true)) {
+                             java.io.PrintWriter out = new java.io.PrintWriter(socket.getOutputStream(), true);
+                             java.io.BufferedReader in = new java.io.BufferedReader(new java.io.InputStreamReader(socket.getInputStream()))) {
                              
                             out.println("CLIENT");
                             out.println(clientID.getText());
@@ -393,20 +398,26 @@ public class Main {
                             out.println(jobDeadline.getText().trim());
                             out.println(jobPriority.getValue());
                             
-                        } catch (java.io.IOException ex) {
-                            throw new RuntimeException("Server connection failed");
+                            response = in.readLine();
                         }
 
-                        // Clear fields after sending
                         for (JTextField field : clientFields) field.setText("");
                         jobDuration.clear();
                         jobPriority.setValue(Job.DEFAULT_PRIORITY);
                     }
 
-                    JOptionPane.showMessageDialog(frame, "Request sent to Server successfully!");
+                    if (response != null && response.startsWith("ACCEPTED")) {
+                        JOptionPane.showMessageDialog(frame, "Success: Request accepted by server!", "Accepted", JOptionPane.INFORMATION_MESSAGE);
+                    } else if (response != null && response.startsWith("REJECTED")) {
+                        JOptionPane.showMessageDialog(frame, "Rejected by Server:\n" + response.split("\\|")[1], "Rejected", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(frame, "Request sent, but no valid response received.", "Notice", JOptionPane.WARNING_MESSAGE);
+                    }
 
+                } catch (java.net.ConnectException ex) {
+                    JOptionPane.showMessageDialog(frame, "Connection Refused: The Server is not running!", "Connection Error", JOptionPane.ERROR_MESSAGE);
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(frame, "Could not connect to server: " + ex.getMessage(), "Server Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
