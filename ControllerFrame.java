@@ -12,6 +12,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class ControllerFrame {
 
+    // converts minutes to hours and minutes ex. 80 -> 1h 20m
     private static String showTime(int minutes) {
         return (minutes / 60) + "h " + (minutes % 60) + "m";
     }
@@ -32,7 +33,7 @@ public class ControllerFrame {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        //table stuff
+        //table 
         String[] columns = {"Order", "Job ID", "Client ID", "Priority", "Duration", "Waiting Time", "Completion Time", "Deadline"};
         DefaultTableModel tableModel = new DefaultTableModel(columns, 0);
         JTable jobTable = new JTable(tableModel);
@@ -116,6 +117,10 @@ public class ControllerFrame {
         calculateButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
+                controller.reloadData();
+                vehiclesLabel.setText("Vehicles: " + controller.getVehicles().size());
+                pendingLabel.setText("Pending Jobs: " + controller.getPendingJobs().size());
+
                 List<Job> schedule = controller.calculateCompletionTimes();
                 //System.out.println("jobs scheduled: " + schedule.size());
 
@@ -152,6 +157,43 @@ public class ControllerFrame {
             }
         });
 
+        deleteButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                int row = jobTable.getSelectedRow();
+
+                if (row == -1) {
+                    JOptionPane.showMessageDialog(frame, "Select a job in the table first.");
+                    return;
+                }
+
+                // The table is in the same order as the schedule
+                List<Job> schedule = controller.calculateCompletionTimes();
+                Job job = schedule.get(row);
+
+                int choice = JOptionPane.showConfirmDialog(
+                        frame,
+                        "Delete job " + job.getJobID() + " for " + job.getClient().getUserID() + "?",
+                        "Delete Job",
+                        JOptionPane.YES_NO_OPTION
+                );
+
+                if (choice != JOptionPane.YES_OPTION) {
+                    return;
+                }
+
+                controller.deleteJob(job);
+
+                tableModel.setRowCount(0);
+                averageLabel.setText("Average Waiting Time:");
+                pendingLabel.setText("Pending Jobs: " + controller.getPendingJobs().size());
+
+                if (controller.getJobList().size() > 0) {
+                    calculateButton.doClick();
+                }
+            }
+        });
+
         logoutButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
@@ -161,6 +203,6 @@ public class ControllerFrame {
 
         frame.add(panel);
         frame.setLocationRelativeTo(null);
-        frame.setVisible(true); 
+        frame.setVisible(true);
     }
 }
