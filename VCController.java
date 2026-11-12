@@ -1,3 +1,9 @@
+/* Project: VCRTS
+ * Class: VCController.java
+ * Author: Ben, Zohaib, Joanna, Felix
+ * Date: November 1, 2026
+ * Keeps track of vehicles and jobs and schedules the jobs.
+ */
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -130,7 +136,8 @@ public class VCController {
             Scanner input = new Scanner(file);
 
             String ownerID = "";
-            String vehicleInfo = "";
+            String licensePlate = "";
+            String vehicleModel = "";
             String vehicleType = "Other";
             int residencyMinutes = 0;
 
@@ -140,8 +147,11 @@ public class VCController {
                 if (line.startsWith("Owner ID: ")) {
                     ownerID = getValue(line);
                 }
-                else if (line.startsWith("Vehicle Information: ")) {
-                    vehicleInfo = getValue(line);
+                else if (line.startsWith("License Plate: ")) {
+                    licensePlate = getValue(line);
+                }
+                else if (line.startsWith("Vehicle Model: ")) {
+                    vehicleModel = getValue(line);
                 }
                 else if (line.startsWith("Vehicle Type: ")) {
                     vehicleType = getValue(line);
@@ -154,8 +164,8 @@ public class VCController {
                     // End of one vehicle, so register it
                     if (!ownerID.equals("") && residencyMinutes > 0) {
                         Vehicle vehicle = new Vehicle(
-                                "",
-                                vehicleInfo,
+                                licensePlate,
+                                vehicleModel,
                                 vehicleType,
                                 residencyMinutes / 60.0,
                                 "Unknown",
@@ -165,7 +175,8 @@ public class VCController {
                     }
 
                     ownerID = "";
-                    vehicleInfo = "";
+                    licensePlate = "";
+                    vehicleModel = "";
                     vehicleType = "Other";
                     residencyMinutes = 0;
                 }

@@ -1,17 +1,26 @@
+/* Project: VCRTS
+ * Class: Main.java
+ * Author: Ben, Zohaib, Joanna, Felix
+ * Date: November 1, 2026
+ * Starts the program and shows the owner and client form.
+ */
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import javax.swing.*;
 
 public class Main {
 
     public static void main(String[] args) {
+
+        // FlatLaf library for GUI sleek design
+        try {
+            UIManager.setLookAndFeel("com.formdev.flatlaf.FlatLightLaf");
+        } catch (Exception ex) {
+            System.out.println("FlatLaf not found");
+        }
 
         VCController controller = new VCController("VC");
 
@@ -23,16 +32,14 @@ public class Main {
 
     public static void openMainWindow(VCController controller) {
 
-
         JFrame frame = new JFrame("VCRTS");
-        frame.setSize(480, 640);
-        frame.setMinimumSize(new java.awt.Dimension(400, 540));
+        frame.setSize(460, 530);
+        frame.setMinimumSize(new java.awt.Dimension(400, 530));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
-
 
         // Zohaib - GUI + Owner Section
 
@@ -67,6 +74,9 @@ public class Main {
         );
         panel.add(topRow);
 
+        JLabel description = new JLabel("Owners rent out their parked cars. Clients submit jobs.");
+        panel.add(description);
+
         JLabel userTypeLabel = new JLabel("Select User Type:");
         panel.add(userTypeLabel);
 
@@ -81,22 +91,27 @@ public class Main {
         panel.add(ownerNote);
 
         JTextField ownerID = new JTextField();
-        JTextField vehicleInfo = new JTextField();
+        JTextField licensePlate = new JTextField();
+        JTextField vehicleModel = new JTextField();
 
         // Zohaib - Vehicle type dropdown
-        String[] vehicleTypes = {"Sedan", "SUV", "Coupe", "Motorcycle", "Other"};
+        String[] vehicleTypes = {"Electric", "Hybrid", "Gas"};
         JComboBox<String> vehicleType = new JComboBox<String>(vehicleTypes);
         DurationInput residencyTime = new DurationInput();
-        JTextField[] ownerFields = {ownerID, vehicleInfo};
+        JTextField[] ownerFields = {ownerID, licensePlate, vehicleModel};
 
         // Zohaib - Owner fields
-        JLabel ownerIDLabel = new JLabel("Owner ID:");
+        JLabel ownerIDLabel = new JLabel("Owner ID (e.g. 12345):");
         panel.add(ownerIDLabel);
         panel.add(ownerID);
 
-        JLabel vehicleInfoLabel = new JLabel("Vehicle Information:");
-        panel.add(vehicleInfoLabel);
-        panel.add(vehicleInfo);
+        JLabel licensePlateLabel = new JLabel("License Plate:");
+        panel.add(licensePlateLabel);
+        panel.add(licensePlate);
+
+        JLabel vehicleModelLabel = new JLabel("Vehicle Model:");
+        panel.add(vehicleModelLabel);
+        panel.add(vehicleModel);
 
         // Zohaib - Show vehicle type dropdown
         JLabel vehicleTypeLabel = new JLabel("Vehicle Type:");
@@ -112,7 +127,8 @@ public class Main {
         JComponent[] ownerSection = {
                 ownerNote,
                 ownerIDLabel, ownerID,
-                vehicleInfoLabel, vehicleInfo,
+                licensePlateLabel, licensePlate,
+                vehicleModelLabel, vehicleModel,
                 vehicleTypeLabel, vehicleType,
                 residencyTimeLabel, residencyTime
         };
@@ -122,14 +138,13 @@ public class Main {
 
         JTextField clientID = new JTextField();
         DurationInput jobDuration = new DurationInput();
-        JTextField jobDeadline = new JTextField();
-        JTextField[] clientFields = {clientID, jobDeadline};
+        JTextField[] clientFields = {clientID};
 
         JLabel clientNote = new JLabel("Enter client information below.");
         panel.add(clientNote);
 
         // Felix - Client fields
-        JLabel clientIDLabel = new JLabel("Client ID:");
+        JLabel clientIDLabel = new JLabel("Client ID (e.g. 12345):");
         panel.add(clientIDLabel);
         panel.add(clientID);
 
@@ -137,9 +152,46 @@ public class Main {
         panel.add(jobDurationLabel);
         panel.add(jobDuration);
 
-        JLabel jobDeadlineLabel = new JLabel("Job Deadline (yyyy-MM-dd):");
+        JLabel jobDeadlineLabel = new JLabel("Job Deadline:");
         panel.add(jobDeadlineLabel);
-        panel.add(jobDeadline);
+
+        // Dropdown month options
+        String[] months = {"January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"};
+
+        String[] days = new String[31];
+        for (int i = 0; i < 31; i++) {
+            days[i] = "" + (i + 1);
+        }
+
+        String[] years = new String[3];
+        int thisYear = LocalDate.now().getYear();
+        for (int i = 0; i < 3; i++) {
+            years[i] = "" + (thisYear + i);
+        }
+
+        JComboBox<String> deadlineMonth = new JComboBox<String>(months);
+        JComboBox<String> deadlineDay = new JComboBox<String>(days);
+        JComboBox<String> deadlineYear = new JComboBox<String>(years);
+
+        // Today's date
+        deadlineMonth.setSelectedIndex(LocalDate.now().getMonthValue() - 1);
+        deadlineDay.setSelectedIndex(LocalDate.now().getDayOfMonth() - 1);
+        deadlineYear.setSelectedIndex(0);
+
+        JPanel deadlineRow = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 0, 0));
+        deadlineRow.add(deadlineMonth);
+        deadlineRow.add(new JLabel("  "));
+        deadlineRow.add(deadlineDay);
+        deadlineRow.add(new JLabel("  "));
+        deadlineRow.add(deadlineYear);
+        deadlineRow.setMaximumSize(
+                new java.awt.Dimension(
+                        Integer.MAX_VALUE,
+                        deadlineRow.getPreferredSize().height
+                )
+        );
+        panel.add(deadlineRow);
 
         // Job priority
         JLabel jobPriorityLabel = new JLabel("Job Priority:");
@@ -165,7 +217,7 @@ public class Main {
                 clientNote,
                 clientIDLabel, clientID,
                 jobDurationLabel, jobDuration,
-                jobDeadlineLabel, jobDeadline,
+                jobDeadlineLabel, deadlineRow,
                 jobPriorityLabel, jobPriorityRow
         };
 
@@ -186,7 +238,7 @@ public class Main {
 
             if (comp instanceof JLabel) {
                 comp.setBorder(
-                        BorderFactory.createEmptyBorder(5, 0, 1, 0)
+                        BorderFactory.createEmptyBorder(8, 0, 3, 0)
                 );
             }
         }
@@ -240,13 +292,12 @@ public class Main {
         }
 
 
-        // Joanna - File Saving + Timestamp
+        // Joanna - File Saving (Now handled by Server)
 
         JButton saveButton = new JButton("Save");
 
         saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
 
                 // Ben - Field entry checks
 
@@ -254,30 +305,49 @@ public class Main {
 
                     // Empty fields
                     for (JTextField field : ownerFields) {
-
                         if (field.getText().trim().isEmpty()) {
-
-                            JOptionPane.showMessageDialog(
-                                    frame,
-                                    "All fields must be filled before saving",
-                                    "Save Error",
-                                    JOptionPane.ERROR_MESSAGE
-                            );
-
+                            JOptionPane.showMessageDialog(frame, "All fields must be filled before saving", "Save Error", JOptionPane.ERROR_MESSAGE);
                             return;
                         }
                     }
 
+                    // Owner ID can only have numbers
+                    String ownerIDText = ownerID.getText().trim();
+                    for (int i = 0; i < ownerIDText.length(); i++) {
+                        if (!Character.isDigit(ownerIDText.charAt(i))) {
+                            JOptionPane.showMessageDialog(frame, "Owner ID must be a number", "Save Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                    }
+                    ownerID.setText(ownerIDText);
+
+                    // License plate checks
+                    String plate = licensePlate.getText().trim().toUpperCase();
+                    if (plate.length() < 2 || plate.length() > 8) {
+                        JOptionPane.showMessageDialog(frame, "License plate must be 2 to 8 characters", "Save Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    for (int i = 0; i < plate.length(); i++) {
+                        char ch = plate.charAt(i);
+                        if (!Character.isLetterOrDigit(ch) && ch != ' ' && ch != '-') {
+                            JOptionPane.showMessageDialog(frame, "License plate can only have letters, numbers, spaces and dashes", "Save Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                    }
+
+                    for (int i = 0; i < controller.getVehicles().size(); i++) {
+                        if (controller.getVehicles().get(i).getVehicleID().equalsIgnoreCase(plate)) {
+                            JOptionPane.showMessageDialog(frame, "A vehicle with this license plate is already registered", "Save Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                    }
+
+                    licensePlate.setText(plate);
+
                     // Residency time must be longer than 0
                     if (residencyTime.totalMinutes() <= 0) {
-
-                        JOptionPane.showMessageDialog(
-                                frame,
-                                "Residency Time must be greater than 0",
-                                "Save Error",
-                                JOptionPane.ERROR_MESSAGE
-                        );
-
+                        JOptionPane.showMessageDialog(frame, "Residency Time must be greater than 0", "Save Error", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
                 }
@@ -287,174 +357,91 @@ public class Main {
 
                     // Empty fields
                     for (JTextField field : clientFields) {
-
                         if (field.getText().trim().isEmpty()) {
-
-                            JOptionPane.showMessageDialog(
-                                    frame,
-                                    "All fields must be filled before saving",
-                                    "Save Error",
-                                    JOptionPane.ERROR_MESSAGE
-                            );
-
+                            JOptionPane.showMessageDialog(frame, "All fields must be filled before saving", "Save Error", JOptionPane.ERROR_MESSAGE);
                             return;
                         }
                     }
 
+                    // Client ID can only have numbers
+                    String clientIDText = clientID.getText().trim();
+                    for (int i = 0; i < clientIDText.length(); i++) {
+                        if (!Character.isDigit(clientIDText.charAt(i))) {
+                            JOptionPane.showMessageDialog(frame, "Client ID must be a number", "Save Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                    }
+                    clientID.setText(clientIDText);
+
                     // Job duration must be longer than 0
                     if (jobDuration.totalMinutes() <= 0) {
-
-                        JOptionPane.showMessageDialog(
-                                frame,
-                                "Job Duration must be greater than 0",
-                                "Save Error",
-                                JOptionPane.ERROR_MESSAGE
-                        );
-
+                        JOptionPane.showMessageDialog(frame, "Job Duration must be greater than 0", "Save Error", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
 
                     // Job deadline must be a date that hasn't passed
+                    String deadline = getDeadline(deadlineMonth, deadlineDay, deadlineYear);
+
                     try {
-
-                        if (LocalDate.parse(jobDeadline.getText().trim())
-                                .isBefore(LocalDate.now())) {
-
-                            JOptionPane.showMessageDialog(
-                                    frame,
-                                    "Job Deadline cannot be in the past",
-                                    "Save Error",
-                                    JOptionPane.ERROR_MESSAGE
-                            );
-
+                        if (LocalDate.parse(deadline).isBefore(LocalDate.now())) {
+                            JOptionPane.showMessageDialog(frame, "Job Deadline cannot be in the past", "Save Error", JOptionPane.ERROR_MESSAGE);
                             return;
                         }
-
                     } catch (DateTimeParseException ex) {
-
-                        JOptionPane.showMessageDialog(
-                                frame,
-                                "Job Deadline must be a date (yyyy-MM-dd)",
-                                "Save Error",
-                                JOptionPane.ERROR_MESSAGE
-                        );
-
+                        JOptionPane.showMessageDialog(frame, "Job Deadline must be a date (yyyy-MM-dd)", "Save Error", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
                 }
 
-
+                // --- CONNECTING TO SERVER ---
                 try {
-
-                    // Zohaib - Client info goes into this folder 
-                    String fileName = "client_transactions.txt";
-                    
-                    // Zohaib - Owner info goes into this folder
                     if (userType.getSelectedItem().equals("Owner")) {
-                        fileName = "owner_transactions.txt";
-                    }
-
-                    // Open's the file 
-                    System.out.println("Saving to: " + new java.io.File(fileName).getAbsolutePath());
-                    FileWriter writer = new FileWriter(fileName, true);
-
-                    String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-                    writer.write("Time: " + time + "\n");
-
-                    writer.write("User Type: " + userType.getSelectedItem() + "\n");
-
-
-                    if (userType.getSelectedItem().equals("Owner")) {
-
-                        // Zohaib - Connect Owner and Vehicle classes
                         String selectedType = (String) vehicleType.getSelectedItem();
-
-                        Vehicle vehicle = new Vehicle(
-                                "",
-                                vehicleInfo.getText(),
-                                selectedType,
-                                residencyTime.totalMinutes() / 60.0,
-                                "Unknown",
-                                "Unknown"
+                        
+                        // Send to Server!
+                        OwnerRequestClient.sendRequest(
+                            ownerID.getText(),
+                            licensePlate.getText(),
+                            vehicleModel.getText(),
+                            selectedType,
+                            residencyTime.totalMinutes() / 60.0
                         );
 
-                        controller.registerVehicle(ownerID.getText(), vehicle);
-
-                        // Check the connection
-                        System.out.println("Owner ID: " + vehicle.getOwner().getUserID());
-                        System.out.println("Vehicles: " + vehicle.getOwner().getVehicles().size());
-
-                        // Owner info
-                        writer.write("Owner ID: " + ownerID.getText() + "\n");
-                        writer.write("Vehicle Information: " + vehicleInfo.getText() + "\n");
-
-                        // Zohaib - Save selected vehicle type
-                        writer.write("Vehicle Type: " + vehicleType.getSelectedItem() + "\n");
-
-                        writer.write("Residency Time: " + residencyTime.describe() + "\n");
-
-                        for (JTextField field : ownerFields) {
-                            field.setText("");
-                        }
+                        // Clear fields
+                        for (JTextField field : ownerFields) field.setText("");
                         residencyTime.clear();
-                    }
+                        
+                    } else if (userType.getSelectedItem().equals("Client")) {
+                        // Force the JSpinner to save whatever is currently typed
+                        try { jobPriority.commitEdit(); } catch (Exception ex) {}
 
-
-                    if (userType.getSelectedItem().equals("Client")) {
-
-                        // Save what was typed in the priority box
-                        try {
-                            jobPriority.commitEdit();
-                        } catch (java.text.ParseException ex) {
-                            // Bad input keeps the old value
+                        // Connect to server
+                        try (java.net.Socket socket = new java.net.Socket("localhost", 5000);
+                             java.io.PrintWriter out = new java.io.PrintWriter(socket.getOutputStream(), true)) {
+                             
+                            out.println("CLIENT");
+                            out.println(clientID.getText());
+                            out.println(jobDuration.totalMinutes());
+                            out.println(getDeadline(deadlineMonth, deadlineDay, deadlineYear));
+                            out.println(jobPriority.getValue());
+                            
+                        } catch (java.io.IOException ex) {
+                            throw new RuntimeException("Server connection failed");
                         }
 
-                        // Client info
-                        writer.write("Client ID: " + clientID.getText() + "\n");
-                        String jobID = Job.generateJobID();
-                        writer.write("Job ID: " + jobID + "\n");
-        
-                        writer.write("Job Duration: " + jobDuration.describe() + "\n");
-                        writer.write("Job Deadline: " + jobDeadline.getText() + "\n");
-                        writer.write("Job Priority: " + jobPriority.getValue() + "\n");
-
-                        int priority = Integer.parseInt(jobPriority.getValue().toString());
-
-                        Job job = new Job(
-                                jobID,
-                                jobDuration.totalMinutes(),
-                                jobDeadline.getText(),
-                                priority
-                        );
-                        job.setSubmitTime(time);
-
-                        controller.addJob(clientID.getText(), job);
-
-                        for (JTextField field : clientFields) {
-                            field.setText("");
-                        }
+                        // Clear fields after sending
+                        for (JTextField field : clientFields) field.setText("");
                         jobDuration.clear();
+                        deadlineMonth.setSelectedIndex(LocalDate.now().getMonthValue() - 1);
+                        deadlineDay.setSelectedIndex(LocalDate.now().getDayOfMonth() - 1);
+                        deadlineYear.setSelectedIndex(0);
                         jobPriority.setValue(Job.DEFAULT_PRIORITY);
                     }
 
-                    writer.write("----------------------\n");
+                    JOptionPane.showMessageDialog(frame, "Request sent to Server successfully!");
 
-                    // Close the file when we are done writing
-                    writer.close();
-
-                    JOptionPane.showMessageDialog(
-                            frame,
-                            "Information saved"
-                    );
-
-                } catch (IOException ex) {
-
-                    JOptionPane.showMessageDialog(
-                            frame,
-                            "Could not save to file: " + ex.getMessage(),
-                            "Save Error",
-                            JOptionPane.ERROR_MESSAGE
-                    );
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(frame, "Could not connect to server: " + ex.getMessage(), "Server Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -485,6 +472,9 @@ public class Main {
                 }
 
                 (owner ? residencyTime : jobDuration).clear();
+                deadlineMonth.setSelectedIndex(LocalDate.now().getMonthValue() - 1);
+                deadlineDay.setSelectedIndex(LocalDate.now().getDayOfMonth() - 1);
+                deadlineYear.setSelectedIndex(0);
                 jobPriority.setValue(Job.DEFAULT_PRIORITY);
             }
         });
@@ -511,10 +501,24 @@ public class Main {
         frame.setVisible(true);
     }
 
+    // Converts dropdown entries into dates
+    static String getDeadline(JComboBox<String> month, JComboBox<String> day, JComboBox<String> year) {
+        String m = "" + (month.getSelectedIndex() + 1);
+        String d = day.getSelectedItem().toString();
+
+        if (m.length() == 1) {
+            m = "0" + m;
+        }
+
+        if (d.length() == 1) {
+            d = "0" + d;
+        }
+
+        return year.getSelectedItem() + "-" + m + "-" + d;
+    }
 
 
-
-    // Ben - Separate hours and minutes boxes, so users don't have to type 8.5 for 8h 30m
+    // Ben - Separate hours and minutes boxes
     static class DurationInput extends JPanel {
 
         private final JSpinner hours = new JSpinner(new SpinnerNumberModel(0, 0, 999, 1));
@@ -532,7 +536,6 @@ public class Main {
         }
 
         int totalMinutes() {
-
             // Keep numbers typed into a box even if the user hasn't clicked away yet
             try {
                 hours.commitEdit();

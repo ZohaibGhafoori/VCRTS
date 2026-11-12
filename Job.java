@@ -1,14 +1,23 @@
+/* Project: VCRTS
+ * Class: Job.java
+ * Author: Ben, Zohaib, Joanna, Felix
+ * Date: November 1, 2026
+ * A job submitted by a client.
+ */
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
+//represents a job a client submits, this stores the jobs details such as its priority
 public class Job {
 
+//lower number means higher priority 
     public static final int HIGHEST_PRIORITY = 1;
     public static final int LOWEST_PRIORITY = 10;
     public static final int DEFAULT_PRIORITY = 5;
 
+    //Job attributes
     private String jobID;
     private String submitTime;
     private Client client;
@@ -20,6 +29,8 @@ public class Job {
     private int waitingTime;
     private int completionTime;
 
+
+    //creates a new job, shows that each job is pending
     public Job(String jobID, int jobDuration, String jobDeadline, int priority) {
         this.jobID = jobID;
         this.jobDuration = jobDuration;
@@ -30,12 +41,13 @@ public class Job {
     }
 
     //Joanna - Generates unique JobID for each job submitted
+  //puts the job ID in a text file to keep track of the next job ID, allows the system to remember the last job ID given to a client  
     static String generateJobID() {
         String counterFile = "job_id_counter.txt";
         int next = 1;
 
         File file = new File(counterFile);
-
+//reads what the last job id number was and adds 1 to it to generate the next job ID, as well as saves the new number to the file
         if (file.exists()) {
             try {
                 Scanner scanner = new Scanner(file);
@@ -56,7 +68,7 @@ public class Job {
         }
         return "Job" + next;
     }
-
+//allows for the other classes to access when attributes are private
     public String getJobID() {
         return jobID;
     }
@@ -141,7 +153,7 @@ public class Job {
     public String trackJob() {
         return "Job " + jobID + " is " + jobStatus;
     }
-
+//converts minutes to hours and minutes for the job duration, so it is easier to read
     public String getDurationText() {
         return (jobDuration / 60) + " hours " + (jobDuration % 60) + " minutes";
     }
@@ -156,3 +168,4 @@ public class Job {
                 + "Job Completion Time: " + completionTime + "\n";
     }
 }
+

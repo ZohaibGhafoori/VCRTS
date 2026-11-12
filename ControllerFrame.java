@@ -1,3 +1,9 @@
+/* Project: VCRTS
+ * Class: ControllerFrame.java
+ * Author: Ben, Zohaib, Joanna, Felix
+ * Date: November 1, 2026
+ * The VC Controller window.
+ */
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -49,6 +55,9 @@ public class ControllerFrame {
         );
         panel.add(topRow);
 
+        JLabel description = new JLabel("Schedule jobs by priority and see when each one will finish.");
+        panel.add(description);
+
         panel.add(Box.createVerticalStrut(5));
 
         // Overview of what the controller is managing
@@ -73,6 +82,11 @@ public class ControllerFrame {
 
         JButton calculateButton = new JButton("Calculate Completion Time");
         panel.add(calculateButton);
+
+        panel.add(Box.createVerticalStrut(5));
+
+        JButton deleteButton = new JButton("Delete Job");
+        panel.add(deleteButton);
 
         for (java.awt.Component c : panel.getComponents()) {
             JComponent comp = (JComponent) c;

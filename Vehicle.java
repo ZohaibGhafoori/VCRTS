@@ -1,9 +1,15 @@
+/* Project: VCRTS
+ * Class: Vehicle.java
+ * Author: Ben, Zohaib, Joanna, Felix
+ * Date: November 1, 2026
+ * A vehicle rented out by an owner.
+ */
 public class Vehicle {
 
     // Vehicle information
     private String vehicleID;
     private VehicleOwner owner;
-    private String vehicleInfo;
+    private String vehicleModel;
     private String vehicleType;
     private double residencyTime;
     private String status;
@@ -11,12 +17,12 @@ public class Vehicle {
     private String departureTime;
 
     // Constructor
-    public Vehicle(String vehicleID, String vehicleInfo, String vehicleType,
+    public Vehicle(String vehicleID, String vehicleModel, String vehicleType,
                    double residencyTime, String arrivalTime,
                    String departureTime) {
 
         this.vehicleID = vehicleID;
-        this.vehicleInfo = vehicleInfo;
+        this.vehicleModel = vehicleModel;
         this.vehicleType = vehicleType;
         this.residencyTime = residencyTime;
         this.arrivalTime = arrivalTime;
@@ -39,9 +45,9 @@ public class Vehicle {
         this.owner = owner;
     }
 
-    // Get Vehicle Information
-    public String getVehicleInfo() {
-        return vehicleInfo;
+    // Get Vehicle Model
+    public String getVehicleModel() {
+        return vehicleModel;
     }
 
     // Get Vehicle Type
@@ -59,9 +65,9 @@ public class Vehicle {
         return status;
     }
 
-    // Update vehicle information
-    public void setVehicleInfo(String newInfo) {
-        vehicleInfo = newInfo;
+    // Update vehicle model
+    public void setVehicleModel(String newModel) {
+        vehicleModel = newModel;
     }
 
 
