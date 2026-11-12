@@ -12,7 +12,7 @@ public class OwnerRequestClient {
             double time) {
 
         try {
-            Socket socket = new Socket("localhost", 5000);
+            Socket socket = new Socket("localhost", VCServer.PORT);
 
             PrintWriter out = new PrintWriter(
                     socket.getOutputStream(), true);
