@@ -28,7 +28,7 @@ public class ControllerFrame {
         serverThread.start();
 
         JFrame frame = new JFrame("VCRTS · Controller Panel");
-        frame.setSize(810, 700);
+        frame.setSize(810, 760);
         frame.setMinimumSize(new java.awt.Dimension(620, 480));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -107,6 +107,16 @@ public class ControllerFrame {
         JScrollPane requestScroll = new JScrollPane(requestList);
         requestScroll.setPreferredSize(new java.awt.Dimension(0, 100));
         panel.add(requestScroll);
+
+        panel.add(Box.createVerticalStrut(5));
+
+        JButton acceptButton = new JButton("Accept");
+        panel.add(acceptButton);
+
+        panel.add(Box.createVerticalStrut(5));
+
+        JButton rejectButton = new JButton("Reject");
+        panel.add(rejectButton);
 
         for (java.awt.Component c : panel.getComponents()) {
             JComponent comp = (JComponent) c;
@@ -205,6 +215,37 @@ public class ControllerFrame {
                 if (controller.getJobList().size() > 0) {
                     calculateButton.doClick();
                 }
+            }
+        });
+
+        // Accept Request button
+        acceptButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                Request request = requestList.getSelectedValue();
+
+                if (request == null) {
+                    JOptionPane.showMessageDialog(frame, "You must select a request first.");
+                    return;
+                }
+
+                waitingRequests.removeElement(request);
+            }
+        });
+
+        // Reject Request button
+        rejectButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                Request request = requestList.getSelectedValue();
+
+                if (request == null) {
+                    JOptionPane.showMessageDialog(frame, "You must select a request first.");
+                    return;
+                }
+
+                waitingRequests.removeElement(request);
+                
             }
         });
 
