@@ -1,30 +1,48 @@
-import java.io.PrintWriter;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
 
 public class Request {
 
-    private String type;
-    private String[] info;
+    // "Owner" or "Client"
+    private String userType;
+
+    // The information to save
+    private String record;
+
+    // Connection to the sender
     private Socket socket;
-    private PrintWriter out;
+    private DataOutputStream outputStream;
 
-    public Request(String type, String[] info, Socket socket, PrintWriter out) {
-        this.type = type;
-        this.info = info;
+    public Request(String userType, String record, Socket socket, DataOutputStream outputStream) {
+        this.userType = userType;
+        this.record = record;
         this.socket = socket;
-        this.out = out;
+        this.outputStream = outputStream;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public String[] getInfo() {
-        return info;
-    }
-
-    // Sends a message back to the owner or client who made the request
+    // Sends a message to the sender
     public void sendMessage(String message) {
-        out.println(message);
+        try {
+            outputStream.writeUTF(message);
+        } catch (IOException ex) {
+            System.out.println("Could not send " + message + ": " + ex.getMessage());
+        }
+    }
+
+    // Text shown in the requests list
+    public String toString() {
+        String[] lines = record.split("\n");
+        String text = "";
+
+        // Skip the time and the dashes
+        for (int i = 1; i < lines.length - 1; i++) {
+            if (i > 1) {
+                text = text + ",  ";
+            }
+            text = text + lines[i];
+        }
+
+        return text;
     }
 }

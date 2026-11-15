@@ -1,17 +1,21 @@
-import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
+import javax.swing.DefaultListModel;
+import javax.swing.SwingUtilities;
 
 public class VCServer implements Runnable {
 
     public static final int PORT = 5050;
 
-    // Requests waiting for the VC Controller to accept or reject
-    private ArrayList<Request> pendingRequests = new ArrayList<Request>();
+    // Requests shown on the VC Controller
+    private DefaultListModel<Request> waitingRequests;
+
+    public VCServer(DefaultListModel<Request> waitingRequests) {
+        this.waitingRequests = waitingRequests;
+    }
 
     // True while the server is listening for Owners and Clients
     private static boolean online = false;
@@ -43,36 +47,33 @@ public class VCServer implements Runnable {
         }
     }
 
-    // Reads one request, keeps it waiting for a decision, and tells the sender it arrived
+    // Reads a request and adds it to the list
     private void receiveRequest(Socket socket) {
         try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            DataInputStream inputStream = new DataInputStream(socket.getInputStream());
+            DataOutputStream outputStream = new DataOutputStream(socket.getOutputStream());
 
-            String type = in.readLine();
+            // Read the user type and the information
+            String userType = inputStream.readUTF();
+            String record = inputStream.readUTF();
+            System.out.println("Request received from " + userType);
 
-            // An owner request has 5 lines: owner ID, plate, model, type and residency time
-            String[] info = new String[5];
-            for (int i = 0; i < info.length; i++) {
-                info[i] = in.readLine();
-            }
+            Request request = new Request(userType, record, socket, outputStream);
 
-            Request request = new Request(type, info, socket, out);
-            addRequest(request);
-
+            // Tell the sender we got it
             request.sendMessage("RECEIVED");
-            System.out.println("Received " + type + " request from " + info[0]);
+
+            // Add the request to the list on screen
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    waitingRequests.addElement(request);
+                }
+            });
+
+            // Keep the connection open for the answer
 
         } catch (IOException ex) {
             System.out.println("Could not read the request: " + ex.getMessage());
         }
-    }
-
-    public synchronized void addRequest(Request request) {
-        pendingRequests.add(request);
-    }
-
-    public synchronized ArrayList<Request> getPendingRequests() {
-        return pendingRequests;
     }
 }

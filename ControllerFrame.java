@@ -39,7 +39,7 @@ public class ControllerFrame {
 
         // Start the server so owners and clients can send requests
         if (!serverStarted) {
-            VCServer server = new VCServer();
+            VCServer server = new VCServer(waitingRequests);
             Thread serverThread = new Thread(server);
             serverThread.start();
             serverStarted = true;
