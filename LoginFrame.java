@@ -23,7 +23,7 @@ public class LoginFrame {
 
     public static void open(VCController controller) {
 
-        JFrame frame = new JFrame("VCRTS - Login");
+        JFrame frame = new JFrame("VCRTS · Login");
         frame.setSize(380, 400);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
