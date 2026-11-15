@@ -20,6 +20,9 @@ public class RequestSender implements Runnable {
     }
 
     public void run() {
+
+        boolean received = false;
+
         try {
             // Connect to the server
             Socket socket = new Socket("localhost", VCServer.PORT);
@@ -35,6 +38,7 @@ public class RequestSender implements Runnable {
             String message = inputStream.readUTF();
 
             if (message.equals("RECEIVED")) {
+                received = true;
                 showMessage("The VC Controller has received your request.");
             }
 
@@ -42,16 +46,22 @@ public class RequestSender implements Runnable {
             message = inputStream.readUTF();
 
             if (message.equals("ACCEPTED")) {
-                showMessage("Your request was accepted and saved.");
+                showMessage("Your request was accepted.");
             }
             else if (message.equals("REJECTED")) {
-                showMessage("Your request was rejected and not saved.");
+                showMessage("Your request was rejected.");
             }
 
             socket.close();
 
         } catch (IOException ex) {
-            showMessage("Could not reach the VC Controller.");
+
+            if (received) {
+                showMessage("The VC Controller closed before it could respond.");
+            }
+            else {
+                showMessage("Could not reach the VC Controller.");
+            }
         }
     }
 
