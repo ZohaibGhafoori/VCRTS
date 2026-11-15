@@ -274,6 +274,11 @@ public class ControllerFrame {
                 request.close();
 
                 waitingRequests.removeElement(request);
+
+                // Refresh the table so it includes the accepted job
+                if (tableModel.getRowCount() > 0) {
+                    calculateButton.doClick();
+                }
             }
         });
 
