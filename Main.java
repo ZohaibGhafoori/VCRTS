@@ -32,7 +32,7 @@ public class Main {
         controller.loadVehicles("owner_transactions.txt");
         controller.loadJobs("client_transactions.txt");
 
-        LoginFrame.open(controller);
+        WelcomeFrame.open(controller);
     }
 
     public static void openMainWindow(VCController controller) {
@@ -94,7 +94,7 @@ public class Main {
         panel.add(Box.createVerticalStrut(5));
 
         // Small instruction for Owner
-        JLabel ownerNote = new JLabel("Enter vehicle owner information below.");
+        JLabel ownerNote = new JLabel("Enter your vehicle information below.");
         panel.add(ownerNote);
 
         JTextField ownerID = new JTextField();
@@ -552,7 +552,8 @@ public class Main {
 
                         // Client info
                         writer.write("Client ID: " + clientID.getText() + "\n");
-                        String jobID = Job.generateJobID();
+                        // The VC Controller gives the real Job ID when it accepts the job
+                        String jobID = "Pending";
                         writer.write("Job ID: " + jobID + "\n");
 
                         writer.write("Job Duration: " + jobDuration.describe() + "\n");

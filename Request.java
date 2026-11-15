@@ -54,6 +54,11 @@ public class Request {
             fileName = "owner_transactions.txt";
         }
 
+        // Jobs get their Job ID only when accepted, so rejected jobs don't use up a number
+        if (userType.equals("Client")) {
+            record = record.replace("Job ID: Pending", "Job ID: " + Job.generateJobID());
+        }
+
         FileWriter writer = new FileWriter(fileName, true);
         writer.write(record);
         writer.close();
