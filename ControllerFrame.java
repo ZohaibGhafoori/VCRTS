@@ -269,6 +269,10 @@ public class ControllerFrame {
                     return;
                 }
 
+                // Tells the sender it was accepted
+                request.sendMessage("ACCEPTED");
+                request.close();
+
                 waitingRequests.removeElement(request);
             }
         });
@@ -283,6 +287,10 @@ public class ControllerFrame {
                     JOptionPane.showMessageDialog(frame, "You must select a request first.");
                     return;
                 }
+
+                // Tells the sender it was rejected
+                request.sendMessage("REJECTED");
+                request.close();
 
                 waitingRequests.removeElement(request);
 

@@ -31,6 +31,15 @@ public class Request {
         }
     }
 
+    // Closes the connection to the sender
+    public void close() {
+        try {
+            socket.close();
+        } catch (IOException ex) {
+            System.out.println("Could not close the connection: " + ex.getMessage());
+        }
+    }
+
     // Saves the request to the owner file or the client file
     public void saveToFile() throws IOException {
         String fileName = "client_transactions.txt";
