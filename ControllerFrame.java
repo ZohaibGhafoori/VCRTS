@@ -20,12 +20,18 @@ public class ControllerFrame {
     // Requests from Owners and Clients
     private static DefaultListModel<Request> waitingRequests = new DefaultListModel<Request>();
 
+    // Checks if server has been started already to prevent server from starting more than once
+    private static boolean serverStarted = false;
+
     public static void open(VCController controller, String username) {
 
         // Start the server so owners and clients can send requests
-        VCServer server = new VCServer();
-        Thread serverThread = new Thread(server);
-        serverThread.start();
+        if (!serverStarted) {
+            VCServer server = new VCServer();
+            Thread serverThread = new Thread(server);
+            serverThread.start();
+            serverStarted = true;
+        }
 
         JFrame frame = new JFrame("VCRTS · Controller Panel");
         frame.setSize(810, 760);
@@ -245,7 +251,7 @@ public class ControllerFrame {
                 }
 
                 waitingRequests.removeElement(request);
-                
+
             }
         });
 
