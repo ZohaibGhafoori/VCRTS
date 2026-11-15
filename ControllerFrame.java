@@ -261,6 +261,14 @@ public class ControllerFrame {
                     return;
                 }
 
+                // Only accepted requests are saved to the file
+                try {
+                    request.saveToFile();
+                } catch (java.io.IOException ex) {
+                    JOptionPane.showMessageDialog(frame, "Could not save the request: " + ex.getMessage());
+                    return;
+                }
+
                 waitingRequests.removeElement(request);
             }
         });

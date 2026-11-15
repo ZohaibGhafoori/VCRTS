@@ -1,4 +1,5 @@
 import java.io.DataOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.Socket;
 
@@ -28,6 +29,19 @@ public class Request {
         } catch (IOException ex) {
             System.out.println("Could not send " + message + ": " + ex.getMessage());
         }
+    }
+
+    // Saves the request to the owner file or the client file
+    public void saveToFile() throws IOException {
+        String fileName = "client_transactions.txt";
+
+        if (userType.equals("Owner")) {
+            fileName = "owner_transactions.txt";
+        }
+
+        FileWriter writer = new FileWriter(fileName, true);
+        writer.write(record);
+        writer.close();
     }
 
     // Text shown in the requests list
