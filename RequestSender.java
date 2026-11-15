@@ -1,3 +1,9 @@
+/* Project: VCRTS
+ * Class: RequestSender.java
+ * Author: Ben, Zohaib, Joanna, Felix
+ * Date: November 15, 2026
+ * Sends an Owner or Client request to the VC Controller on its own thread and shows the replies.
+ */
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -5,7 +11,6 @@ import java.net.Socket;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-// Sends a request to the VC Controller on its own thread
 public class RequestSender implements Runnable {
 
     // "Owner" or "Client"
@@ -34,7 +39,7 @@ public class RequestSender implements Runnable {
             outputStream.writeUTF(userType);
             outputStream.writeUTF(record);
 
-            // Wait for the server to say it has recieved it
+            // Wait for the server to say it has received it
             String message = inputStream.readUTF();
 
             if (message.equals("RECEIVED")) {

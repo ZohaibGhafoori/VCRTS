@@ -1,3 +1,9 @@
+/* Project: VCRTS
+ * Class: VCServer.java
+ * Author: Ben, Zohaib, Joanna, Felix
+ * Date: November 15, 2026
+ * The VC Controller server. Waits for Owners and Clients to connect and send requests.
+ */
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;

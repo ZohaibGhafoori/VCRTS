@@ -1,5 +1,9 @@
-// Runs on its own thread for each user that connects to the server
-
+/* Project: VCRTS
+ * Class: RequestHandler.java
+ * Author: Ben, Zohaib, Joanna, Felix
+ * Date: November 15, 2026
+ * Runs on its own thread for each user that connects to the server.
+ */
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;

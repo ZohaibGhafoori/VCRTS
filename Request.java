@@ -1,3 +1,9 @@
+/* Project: VCRTS
+ * Class: Request.java
+ * Author: Ben, Zohaib, Joanna, Felix
+ * Date: November 15, 2026
+ * A request from an Owner or Client that waits for the VC Controller to accept or reject it.
+ */
 import java.io.DataOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
