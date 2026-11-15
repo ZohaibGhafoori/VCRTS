@@ -13,9 +13,22 @@ public class VCServer implements Runnable {
     // Requests waiting for the VC Controller to accept or reject
     private ArrayList<Request> pendingRequests = new ArrayList<Request>();
 
+    // True while the server is listening for Owners and Clients
+    private static boolean online = false;
+
+    // synchronized because the server thread changes this and the Controller window reads it
+    public static synchronized boolean isOnline() {
+        return online;
+    }
+
+    private static synchronized void setOnline(boolean value) {
+        online = value;
+    }
+
     public void run() {
         try {
             ServerSocket serverSocket = new ServerSocket(PORT);
+            setOnline(true);
             System.out.println("VC Controller server is listening on port " + PORT);
 
             while (true) {
@@ -25,6 +38,7 @@ public class VCServer implements Runnable {
             }
 
         } catch (IOException ex) {
+            setOnline(false);
             System.out.println("Server error: " + ex.getMessage());
         }
     }

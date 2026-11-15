@@ -17,6 +17,18 @@ public class ControllerFrame {
         return (minutes / 60) + "h " + (minutes % 60) + "m";
     }
 
+    // Connection status labels
+    private static void showServerStatus(JLabel statusLabel) {
+        if (VCServer.isOnline()) {
+            statusLabel.setText("\u25CF Online");
+            statusLabel.setForeground(new java.awt.Color(0, 150, 0));
+        }
+        else {
+            statusLabel.setText("\u2298 Offline");
+            statusLabel.setForeground(java.awt.Color.RED);
+        }
+    }
+
     // Requests from Owners and Clients
     private static DefaultListModel<Request> waitingRequests = new DefaultListModel<Request>();
 
@@ -58,7 +70,21 @@ public class ControllerFrame {
         JPanel topRow = new JPanel(new java.awt.BorderLayout());
         topRow.add(title, java.awt.BorderLayout.WEST);
 
+        // Server status label
+        JLabel statusLabel = new JLabel();
+        showServerStatus(statusLabel);
+
+        // Check the server once a second and update the label
+        Timer statusTimer = new Timer(1000, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                showServerStatus(statusLabel);
+            }
+        });
+        statusTimer.start();
+
         JPanel buttonHolder = new JPanel(new java.awt.GridBagLayout());
+        buttonHolder.add(statusLabel);
+        buttonHolder.add(Box.createHorizontalStrut(15));
         buttonHolder.add(logoutButton);
         topRow.add(buttonHolder, java.awt.BorderLayout.EAST);
 
@@ -257,6 +283,7 @@ public class ControllerFrame {
 
         logoutButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                statusTimer.stop();
                 frame.dispose();
                 LoginFrame.open(controller);
             }
