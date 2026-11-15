@@ -147,7 +147,7 @@ public class Main {
         DurationInput jobDuration = new DurationInput();
         JTextField[] clientFields = {clientID};
 
-        JLabel clientNote = new JLabel("Enter client information below.");
+        JLabel clientNote = new JLabel("Enter job information below.");
         panel.add(clientNote);
 
         // Felix - Client fields
