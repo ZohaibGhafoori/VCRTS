@@ -8,8 +8,8 @@
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -508,17 +508,8 @@ public class Main {
 
                 try {
 
-                    // Zohaib - Client info goes into this folder
-                    String fileName = "client_transactions.txt";
-
-                    // Zohaib - Owner info goes into this folder
-                    if (userType.getSelectedItem().equals("Owner")) {
-                        fileName = "owner_transactions.txt";
-                    }
-
-                    // Open's the file
-                    System.out.println("Saving to: " + new java.io.File(fileName).getAbsolutePath());
-                    FileWriter writer = new FileWriter(fileName, true);
+                    // Joanna - Collect the information to send to the VC Controller
+                    StringWriter writer = new StringWriter();
 
                     String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
                     writer.write("Time: " + time + "\n");
@@ -603,15 +594,15 @@ public class Main {
                         jobPriority.setValue(Job.DEFAULT_PRIORITY);
                     }
 
-                    writer.write("----------------------\n");
+                    writer.write("---------------------\n");
 
-                    // Close the file when we are done writing
                     writer.close();
 
-                    JOptionPane.showMessageDialog(
-                            frame,
-                            "Information saved"
-                    );
+                    // Joanna - Send it to the VC Controller on its own thread
+                    String type = (String) userType.getSelectedItem();
+                    RequestSender sender = new RequestSender(type, writer.toString());
+                    Thread thread = new Thread(sender);
+                    thread.start();
 
                 } catch (IOException ex) {
 
