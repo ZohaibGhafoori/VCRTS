@@ -17,6 +17,9 @@ public class ControllerFrame {
         return (minutes / 60) + "h " + (minutes % 60) + "m";
     }
 
+    // Requests from Owners and Clients
+    private static DefaultListModel<Request> waitingRequests = new DefaultListModel<Request>();
+
     public static void open(VCController controller, String username) {
 
         // Start the server so owners and clients can send requests
@@ -25,7 +28,7 @@ public class ControllerFrame {
         serverThread.start();
 
         JFrame frame = new JFrame("VCRTS · Controller Panel");
-        frame.setSize(810, 580);
+        frame.setSize(810, 700);
         frame.setMinimumSize(new java.awt.Dimension(620, 480));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -93,6 +96,17 @@ public class ControllerFrame {
 
         JButton deleteButton = new JButton("Delete Job");
         panel.add(deleteButton);
+
+        panel.add(Box.createVerticalStrut(10));
+
+        // Requests waiting for the VC Controller
+        JLabel requestsLabel = new JLabel("Requests:");
+        panel.add(requestsLabel);
+
+        JList<Request> requestList = new JList<Request>(waitingRequests);
+        JScrollPane requestScroll = new JScrollPane(requestList);
+        requestScroll.setPreferredSize(new java.awt.Dimension(0, 100));
+        panel.add(requestScroll);
 
         for (java.awt.Component c : panel.getComponents()) {
             JComponent comp = (JComponent) c;
