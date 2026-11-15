@@ -32,7 +32,7 @@ public class Main {
         controller.loadVehicles("owner_transactions.txt");
         controller.loadJobs("client_transactions.txt");
 
-        LoginFrame.open(controller);
+        WelcomeFrame.open(controller);
     }
 
     public static void openMainWindow(VCController controller) {
