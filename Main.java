@@ -492,20 +492,7 @@ public class Main {
                 }
 
 
-                // Zohaib - Milestone 5 Owner connection
-                if (userType.getSelectedItem().equals("Owner")) {
-
-                    OwnerSubmission.send(
-                            ownerID.getText(),
-                            licensePlate.getText(),
-                            vehicleModel.getText(),
-                            (String) vehicleType.getSelectedItem(),
-                            residencyTime.totalMinutes() / 60.0
-                    );
-
-                    return;
-                }
-
+                
                 try {
 
                     // Joanna - Collect the information to send to the VC Controller
