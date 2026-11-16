@@ -318,7 +318,7 @@ public class Main {
 
                             JOptionPane.showMessageDialog(
                                     frame,
-                                    "All fields must be filled before saving",
+                                    "All fields must be filled before Submitting",
                                     "Save Error",
                                     JOptionPane.ERROR_MESSAGE
                             );
@@ -419,7 +419,7 @@ public class Main {
 
                             JOptionPane.showMessageDialog(
                                     frame,
-                                    "All fields must be filled before saving",
+                                    "All fields must be filled before Submitting",
                                     "Save Error",
                                     JOptionPane.ERROR_MESSAGE
                             );
