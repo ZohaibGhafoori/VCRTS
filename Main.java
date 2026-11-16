@@ -301,7 +301,7 @@ public class Main {
 
         // Joanna - File Saving + Timestamp
 
-        JButton saveButton = new JButton("Save");
+        JButton saveButton = new JButton("Submit");
 
         saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
