@@ -20,4 +20,30 @@ public class OwnerRegistrationData {
         this.type = type;
         this.time = time;
     }
+
+    // Zohaib - Check Owner information
+    public boolean isValid() {
+
+        if (ownerID == null || ownerID.trim().isEmpty()) {
+            return false;
+        }
+
+        if (plate == null || plate.trim().isEmpty()) {
+            return false;
+        }
+
+        if (model == null || model.trim().isEmpty()) {
+            return false;
+        }
+
+        if (type == null || type.trim().isEmpty()) {
+            return false;
+        }
+
+        if (!Double.isFinite(time) || time <= 0) {
+            return false;
+        }
+
+        return true;
+    }
 }
