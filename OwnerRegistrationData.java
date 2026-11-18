@@ -1,12 +1,13 @@
 public class OwnerRegistrationData {
 
-    // Zohaib - Owner registration information
+    // Zohaib - Owner information
     private String ownerID;
     private String plate;
     private String model;
     private String type;
     private double time;
 
+    // Constructor
     public OwnerRegistrationData(
             String ownerID,
             String plate,
@@ -21,7 +22,7 @@ public class OwnerRegistrationData {
         this.time = time;
     }
 
-    // Zohaib - Check Owner information
+    // Check Owner information
     public boolean isValid() {
 
         if (ownerID == null || ownerID.trim().isEmpty()) {
@@ -45,5 +46,19 @@ public class OwnerRegistrationData {
         }
 
         return true;
+    }
+
+    // Prepare Owner information for server
+    public String getRecord() {
+
+        String record = "";
+
+        record += "Owner ID: " + ownerID.trim() + "\n";
+        record += "License Plate: " + plate.trim() + "\n";
+        record += "Vehicle Model: " + model.trim() + "\n";
+        record += "Vehicle Type: " + type.trim() + "\n";
+        record += "Residency Time: " + time + " hours\n";
+
+        return record;
     }
 }
